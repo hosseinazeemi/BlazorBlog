@@ -1,0 +1,20 @@
+﻿@inherits LayoutComponentBase
+    <div class="scroll-progress primary-bg"></div>
+    <!-- Preloader Start -->
+    <div class="main-wrap main">
+        <Header />
+
+        <main class="position-relative">
+            <!--archive header-->
+            <BreadCrumb />
+            <!--main content-->
+            <div class="main_content sidebar_right pb-50">
+                @Body
+            </div>
+        </main>
+
+       <Footer />
+    </div>
+    <!-- Main Wrap End-->
+    <div class="dark-mark"></div>
+    <!-- Vendor JS-->

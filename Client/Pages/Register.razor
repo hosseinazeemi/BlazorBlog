@@ -1,0 +1,33 @@
+﻿@page "/Register" 
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-xl-6 col-md-10">
+            <div class="login_wrap widget-taber-content shadow p-30 background-white border-radius-5">
+                <div class="padding_eight_all bg-white" dir="rtl">
+                    <div class="heading_s1">
+                        <h3 class="mb-30 text-center">ثبت نام</h3>
+                    </div>
+                    <form method="post">
+                        <div class="form-group">
+                            <input type="text" required="" class="form-control" name="email" placeholder="ایمیل">
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control" required="" type="password" name="password" placeholder="کلمه عبور">
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control" required="" type="password" name="password" placeholder="تکرار کلمه عبور">
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-fill-out btn-block" name="login">ثبت نام</button>
+                        </div>
+                    </form>
+                    <div class="text-muted text-center">قبلا ثبت نام کرده اید ؟ <NavLink href="/login">ورود به حساب</NavLink></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@code {
+
+}

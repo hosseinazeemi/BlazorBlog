@@ -1,0 +1,89 @@
+﻿<header class="main-header header-style-1 mb-40">
+    <div class="top-bar pt-10 pb-10 background-white d-none d-md-block">
+        <div class="container">
+            <div class="row">
+                <div class="col-6 text-left">
+                    <div class="language d-inline-block font-small">
+                        <div id="langMenuDropdow" class="dropdown-menu dropdown-menu-left text-right shadow" aria-labelledby="langMenu">
+                            <a class="dropdown-item" href="#">فارسی</a>
+                            <a class="dropdown-item" href="#">English</a>
+                        </div>
+                        <a class="dropdown-toggle" href="#" role="button" id="langMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="ti-world mr-5"></i>
+                            <span>EN</span>
+                        </a>
+                    </div>
+                    <div id="datetime" class="d-inline-block">
+                        <ul>
+                            <li>
+                                <img src="./assets/imgs/logo-2.png" width="130" />
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-6 text-right">
+                    <ul class="header-social-network d-inline-block list-inline">
+                        <li class="list-inline-item"><a class="social-icon facebook-icon text-xs-center" target="_blank" href="#"><i class="ti-facebook"></i></a></li>
+                        <li class="list-inline-item"><a class="social-icon twitter-icon text-xs-center" target="_blank" href="#"><i class="ti-twitter-alt"></i></a></li>
+                        <li class="list-inline-item"><a class="social-icon instagram-icon text-xs-center" target="_blank" href="#"><i class="ti-instagram"></i></a></li>
+                    </ul>
+                    <div class="vline-space d-inline-block"></div>
+                    <div class="user-account d-inline-block font-small">
+                        <a class="dropdown-toggle font-weight-bold" href="#" role="button" id="userMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="ti-user"></i>
+                            <span>حساب کاربری</span>
+                        </a>
+                        <div id="userMenuDropdow" class="dropdown-menu dropdown-menu-right text-right shadow" aria-labelledby="userMenu">
+                            <a class="dropdown-item" href="#"><i class="ti-pencil-alt"></i>ویرایش اطلاعات</a>
+                            <a class="dropdown-item" href="#"><i class="ti-settings"></i>ثبت مقاله جدید</a>
+                            <a class="dropdown-item" href="#"><i class="ti-stats-up"></i>لیست مقاله های من</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="login.html"><i class="ti-share"></i>خروج</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-bottom header-sticky background-white text-center">
+        <div class="mobile_menu d-lg-none d-block">
+
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <!-- Main-menu -->
+                    <div class="main-nav text-center d-none d-lg-block">
+                        <nav>
+                            <ul id="navigation" class="main-menu text-right " dir="rtl">
+                                <li>
+                                    <NavLink href="index.html" class="font-weight-bold">خانه</NavLink>
+                                </li>
+                                <li class="menu-item-has-children" dir="rtl">
+                                    <NavLink href="index.html" class="font-weight-bold">مقاله ها</NavLink>
+                                    <ul class="sub-menu">
+                                        <li><NavLink href="/Blog/Detail/2" class="text-right">بهترین نسخه اندروید کدام است ؟</NavLink></li>
+                                        <li><NavLink href="/Blog/Detail/2" class="text-right">چه لپ تاپی خوب است ؟</NavLink></li>
+                                        <li><NavLink href="/Blog/Detail/2" class="text-right">نحوه محاسبه قیمت سکه</NavLink></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <NavLink href="/Register" class="font-weight-bold">ثبت نام</NavLink>
+                                </li>
+                                <li>
+                                    <NavLink href="/Login" class="font-weight-bold">ورود</NavLink>
+
+                                </li>
+
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+@code {
+
+}
