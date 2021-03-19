@@ -16,5 +16,6 @@ namespace Blazor_10.Shared.Entities
         public int DisLike { get; set; } = 0;
         public long UserId { get; set; }
         public virtual User User { get; set; }
+        public virtual ICollection<Comment> Comments { get; set; }
     }
 }
