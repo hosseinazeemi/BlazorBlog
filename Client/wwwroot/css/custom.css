@@ -18,3 +18,9 @@
 a, p, li, ul, h1, h2, h3, h4, h5, h6, pre, strong {
     font-family: "iransans_fa"!important;
 }
+.validation-errors{
+    text-align:right!important;
+}
+.validation-errors li {
+    list-style-type : circle;
+}

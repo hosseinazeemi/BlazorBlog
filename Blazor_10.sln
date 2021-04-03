@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31019.35
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blazor_10.Server", "Server\Blazor_10.Server.csproj", "{5AC1B7BF-6ECE-42F3-934C-8C39E56C8E0D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blazor_10.Server", "Server\Blazor_10.Server.csproj", "{5AC1B7BF-6ECE-42F3-934C-8C39E56C8E0D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blazor_10.Client", "Client\Blazor_10.Client.csproj", "{2F8264CB-FC00-42CA-B853-88F6E3CB51BF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blazor_10.Client", "Client\Blazor_10.Client.csproj", "{2F8264CB-FC00-42CA-B853-88F6E3CB51BF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blazor_10.Shared", "Shared\Blazor_10.Shared.csproj", "{987C703D-3A86-4883-A3A4-EAAC8C2DF4D9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blazor_10.Shared", "Shared\Blazor_10.Shared.csproj", "{987C703D-3A86-4883-A3A4-EAAC8C2DF4D9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

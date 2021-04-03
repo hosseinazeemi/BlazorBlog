@@ -1,4 +1,5 @@
-﻿using Blazor_10.Shared;
+﻿using Blazor_10.Server.Context;
+using Blazor_10.Shared;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -12,6 +13,7 @@ namespace Blazor_10.Server.Controllers
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
     {
+        private readonly AppDbContext _db;
         private static readonly string[] Summaries = new[]
         {
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
@@ -19,9 +21,12 @@ namespace Blazor_10.Server.Controllers
 
         private readonly ILogger<WeatherForecastController> _logger;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        public WeatherForecastController(ILogger<WeatherForecastController> logger, AppDbContext db)
         {
             _logger = logger;
+            _db = db;
+
+           
         }
 
         [HttpGet]
