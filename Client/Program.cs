@@ -1,5 +1,6 @@
 using Blazor_10.Client.Repositories;
 using Blazor_10.Client.Services;
+using Blazor_10.Shared.Helper;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -22,19 +23,21 @@ namespace Blazor_10.Client
 
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
+            builder.Services.AddScoped<IHttpService, HttpService>();
+            builder.Services.AddScoped<IAuthRepository, AuthRepository>();
+            builder.Services.AddScoped<ProtectPassword>();
+            builder.Services.AddSingleton<UserStateService>();
+
+            builder.Services.AddAuthorizationCore();
+            builder.Services.AddOptions();
 
             builder.Services.AddScoped<JWTService>();
             builder.Services.AddScoped<AuthenticationStateProvider, JWTService>(
-                option => option.GetRequiredService<JWTService>()    
+                option => option.GetRequiredService<JWTService>()
             );
             builder.Services.AddScoped<IUserAuthService, JWTService>(
-                option => option.GetRequiredService<JWTService>()    
+                option => option.GetRequiredService<JWTService>()
             );
-
-
-            builder.Services.AddScoped<IHttpService, HttpService>();
-            builder.Services.AddScoped<IAuthRepository, AuthRepository>();
-
             await builder.Build().RunAsync();
         }
     }

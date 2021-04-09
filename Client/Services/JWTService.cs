@@ -26,7 +26,7 @@ namespace Blazor_10.Client.Services
             // Empty User Data
             return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
         }
-        public override async Task<AuthenticationState> GetAuthenticationStateAsync()
+        public async override Task<AuthenticationState> GetAuthenticationStateAsync()
         {
             var token = await _jsRuntime.GetItem(_tokenKey);
             if (string.IsNullOrEmpty(token))
@@ -39,9 +39,7 @@ namespace Blazor_10.Client.Services
         public AuthenticationState BuildAuth(string jwtToken)
         {
             _http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", jwtToken);
-            return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity(
-                ParseClaimsFromJwt(jwtToken), "jwt"
-            )));
+            return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity(ParseClaimsFromJwt(jwtToken), "jwt")));
         }
 
         private IEnumerable<Claim> ParseClaimsFromJwt(string jwt)

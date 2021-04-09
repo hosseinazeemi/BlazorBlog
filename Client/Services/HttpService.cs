@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Blazor_10.Client.Services
 {
-    public class HttpService:IHttpService
+    public class HttpService : IHttpService
     {
         private JsonSerializerOptions defaultJsonSerializerOptions =>
             new JsonSerializerOptions() { PropertyNameCaseInsensitive = true };

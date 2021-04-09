@@ -1,4 +1,6 @@
-﻿<header class="main-header header-style-1 mb-40">
+﻿@inject IUserAuthService userService
+@inject NavigationManager navigationManager
+<header class="main-header header-style-1 mb-40">
     <div class="top-bar pt-10 pb-10 background-white d-none d-md-block">
         <div class="container">
             <div class="row">
@@ -38,7 +40,7 @@
                             <a class="dropdown-item" href="#"><i class="ti-settings"></i>ثبت مقاله جدید</a>
                             <a class="dropdown-item" href="#"><i class="ti-stats-up"></i>لیست مقاله های من</a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="login.html"><i class="ti-share"></i>خروج</a>
+                            <button type="button" class="dropdown-item" @onclick="Logout"><i class="ti-share"></i>خروج</button>
                         </div>
                     </div>
                 </div>
@@ -85,5 +87,9 @@
     </div>
 </header>
 @code {
-
+    private async Task Logout()
+    {
+        await userService.Logout();
+        navigationManager.NavigateTo("/Login");
+    }
 }

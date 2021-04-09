@@ -3,6 +3,7 @@ using Blazor_10.Shared.Entities;
 using Blazor_10.Shared.Helper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -21,42 +22,37 @@ namespace Blazor_10.Server.Controllers
     {
         private readonly IConfiguration _config;
         private readonly AppDbContext _db;
-        public AuthController(IConfiguration config, AppDbContext db)
+        private readonly ProtectPassword _protectPassword;
+        public AuthController(IConfiguration config, AppDbContext db ,
+            ProtectPassword protect)
         {
             _config = config;
             _db = db;
+            _protectPassword = protect;
         }
-        [HttpPost("Create")]
-        public async Task<ActionResult<TokenData>> CreateUser([FromBody] UserData userData)
+        [HttpPost("Login")]
+        public async Task<ActionResult<TokenData>> Login([FromBody] UserData userData)
         {
-            var user = new IdentityUser { UserName = userData.Email, Email = userData.Email };
-            bool result = false;
-            // Send User Data to Repository for add
-            if (result)
+            User user = await _db.Users.Include(u => u.Role)
+               .FirstOrDefaultAsync(p => p.Email == userData.Email);
+
+            if (user != null && _protectPassword.ValidatePassword(userData.Password, user.Password))
             {
-                return GenerateToken(userData);
+                return await GenerateToken(user);
             }
             else
             {
-                return BadRequest("UserName Or Password Is Invalid");
+                return new TokenData
+                {
+                    Token = null,
+                    Expiration = null,
+                    Status = false,
+                    Message = "Invalid Username or Password"
+                };
             }
         }
 
-        [HttpPost("Login")]
-        public async Task<ActionResult<TokenData>> LoginUser([FromBody] UserData userData)
-        {
-            User response = _db.Users.FirstOrDefault(p => p.Email == userData.Email);
-            bool result = true;
-            if (result)
-            {
-                return GenerateToken(response);
-            }
-            else
-            {
-                return BadRequest("Invalid");
-            }
-        }
-        private TokenData GenerateToken(User user)
+        private async Task<TokenData> GenerateToken(User user)
         {
             var claims = new List<Claim>()
             {
@@ -78,7 +74,9 @@ namespace Blazor_10.Server.Controllers
             return new TokenData
             {
                 Token = new JwtSecurityTokenHandler().WriteToken(token),
-                Expiration = expiration
+                Expiration = expiration,
+                Status = true ,
+                Message = "Success"
             };
         }
     }

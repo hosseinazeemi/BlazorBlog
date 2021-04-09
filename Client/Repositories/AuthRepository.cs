@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Blazor_10.Client.Repositories
 {
-    public class AuthRepository:IAuthRepository
+    public class AuthRepository : IAuthRepository
     {
         private readonly IHttpService _httpService;
         private readonly string authUrl = "api/auth";
@@ -17,7 +17,7 @@ namespace Blazor_10.Client.Repositories
         }
         public async Task<TokenData> Login(UserData userData)
         {
-            var response = await _httpService.PostAsync<UserData , TokenData>($"{authUrl}/login", userData);
+            var response = await _httpService.PostAsync<UserData, TokenData>($"{authUrl}/login", userData);
             if (!response.Success)
             {
                 throw new ApplicationException(await response.GetBody());
