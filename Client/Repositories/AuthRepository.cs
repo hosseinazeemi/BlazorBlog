@@ -26,4 +26,5 @@ namespace Blazor_10.Client.Repositories
             return response.Response;
         }
     }
+    
 }

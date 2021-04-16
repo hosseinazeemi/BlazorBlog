@@ -4,6 +4,9 @@
 @inject IUserAuthService userService
 @inject UserStateService userState
 @inject NavigationManager navigationManager
+@inject GenerateNewToken tokenService
+@inject IJSRuntime js
+@*@attribute [Authorize(Roles = "user")]*@
 
 <div class="container">
     <div class="row justify-content-center">
@@ -59,12 +62,14 @@
 
     private async Task LoginUser()
     {
+        tokenService.Dispose();
         var response = await authRepo.Login(User);
         var authentication = await authenticaionState;
         if (response.Status)
         {
+            tokenService.Initiate();
             // ===
-            await userService.Login(response.Token);
+            await userService.Login(response);
             userState.SetUserInfo(authentication.User.Claims.ToList());
             navigationManager.NavigateTo("/");
         }

@@ -1,7 +1,11 @@
-﻿using Microsoft.AspNetCore.Components.Authorization;
+﻿using Blazor_10.Client.Repositories;
+using Blazor_10.Shared.Helper;
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.JSInterop;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -15,6 +19,7 @@ namespace Blazor_10.Client.Services
     {
         private readonly IJSRuntime _jsRuntime;
         private readonly string _tokenKey = "token";
+        private readonly string _expirationKey = "expirationKey";
         private readonly HttpClient _http;
         public JWTService(IJSRuntime jsRuntime, HttpClient http)
         {
@@ -33,9 +38,48 @@ namespace Blazor_10.Client.Services
             {
                 return EmptyUserData();
             }
+
+            if (!await CheckToken())
+            {
+                await CleanUp();
+                return EmptyUserData();
+            }
+
             return BuildAuth(token);
         }
-
+        public async Task<bool> CheckToken()
+        {
+            Console.WriteLine("چک کردن توکن");
+            string expiration = await _jsRuntime.GetItem(_expirationKey);
+            DateTime nowDate = DateTime.Now;
+            if (!string.IsNullOrEmpty(expiration))
+            {
+                DateTime targetDate = Convert.ToDateTime(expiration);
+                var diff = targetDate.Subtract(nowDate).TotalSeconds;
+                if (diff > 0)
+                {
+                    Console.WriteLine("TRUE");
+                    return true;
+                }
+                else
+                {
+                    Console.WriteLine("FALSE 1");
+                    return false;
+                }
+            }else
+            {
+                Console.WriteLine("FALSE 2");
+                return false;
+            }
+        }
+        public async Task CleanUp()
+        {
+            Console.WriteLine("متد پاک کردن توکن");
+            await _jsRuntime.RemoveItem(_tokenKey);
+            await _jsRuntime.RemoveItem(_expirationKey);
+            _http.DefaultRequestHeaders.Authorization = null;
+            NotifyAuthenticationStateChanged(Task.FromResult(EmptyUserData()));
+        }
         public AuthenticationState BuildAuth(string jwtToken)
         {
             _http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", jwtToken);
@@ -84,18 +128,19 @@ namespace Blazor_10.Client.Services
         }
 
         // For IUserAuthService
-        public async Task Login(string token)
+        public async Task Login(TokenData tokenData)
         {
-            await _jsRuntime.SetItem(_tokenKey, token);
-            var authState = BuildAuth(token);
+            await _jsRuntime.SetItem(_tokenKey, tokenData.Token);
+            await _jsRuntime.SetItem(_expirationKey, tokenData.Expiration.ToString());
+            var authState = BuildAuth(tokenData.Token);
             NotifyAuthenticationStateChanged(Task.FromResult(authState));
         }
 
         public async Task Logout()
         {
-            await _jsRuntime.RemoveItem(_tokenKey);
-            _http.DefaultRequestHeaders.Authorization = null;
+            await CleanUp();
             NotifyAuthenticationStateChanged(Task.FromResult(EmptyUserData()));
+
         }
     }
 }

@@ -27,6 +27,7 @@ namespace Blazor_10.Client
             builder.Services.AddScoped<IAuthRepository, AuthRepository>();
             builder.Services.AddScoped<ProtectPassword>();
             builder.Services.AddSingleton<UserStateService>();
+            builder.Services.AddScoped<GenerateNewToken>();
 
             builder.Services.AddAuthorizationCore();
             builder.Services.AddOptions();

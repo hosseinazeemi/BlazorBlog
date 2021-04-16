@@ -1,4 +1,6 @@
 ﻿@inherits LayoutComponentBase
+@inject GenerateNewToken newToken
+
 
 <div class="scroll-progress primary-bg"></div>
 <!-- Preloader Start -->
@@ -21,5 +23,8 @@
 <!-- Vendor JS-->
 
 @code{
-   
+    protected override void OnInitialized()
+    {
+        newToken.Initiate();
+    }
 }

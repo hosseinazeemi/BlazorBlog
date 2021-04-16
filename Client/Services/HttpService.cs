@@ -48,5 +48,21 @@ namespace Blazor_10.Client.Services
             var responseString = await httpResponse.Content.ReadAsStringAsync();
             return JsonSerializer.Deserialize<T>(responseString, options);
         }
+
+        public async Task<ResponseData<T>> Get<T>(string url)
+        {
+            var responseHTTP = await _http.GetAsync(url);
+
+            if (responseHTTP.IsSuccessStatusCode)
+            {
+                var response = await Deserialize<T>(responseHTTP, defaultJsonSerializerOptions);
+                return new ResponseData<T>(response, true, responseHTTP);
+            }
+            else
+            {
+                return new ResponseData<T>(default, false, responseHTTP);
+            }
+        }
+        
     }
 }

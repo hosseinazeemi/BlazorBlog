@@ -1,6 +1,8 @@
 ﻿using Blazor_10.Server.Context;
 using Blazor_10.Shared.Entities;
 using Blazor_10.Shared.Helper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -51,7 +53,6 @@ namespace Blazor_10.Server.Controllers
                 };
             }
         }
-
         private async Task<TokenData> GenerateToken(User user)
         {
             var claims = new List<Claim>()
@@ -62,7 +63,8 @@ namespace Blazor_10.Server.Controllers
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["jwt:key"]));
             var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-            var expiration = DateTime.UtcNow.AddYears(1);
+            
+            var expiration = DateTime.Now.AddMinutes(1);
             JwtSecurityToken token = new JwtSecurityToken(
                 issuer: null,
                 audience: null,
