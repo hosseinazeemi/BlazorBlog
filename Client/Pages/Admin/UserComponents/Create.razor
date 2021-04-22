@@ -1,5 +1,13 @@
-﻿<h3>Create</h3>
+﻿@page "/admin/users/create"
+@layout AdminLayout
+@inject IUserRepository userRepository
 
-@code {
 
-}
+<div class="container shadow p-5 mt-4" dir="rtl">
+    <h3 class="text-right">ثبت کاربر</h3>
+    @if (ShowMessage)
+    {
+        <p class="alert alert-info text-center font-weight-bold">@Message</p>
+    }
+    <Form user="User" SubmitCallback="CreateUser" />
+</div>

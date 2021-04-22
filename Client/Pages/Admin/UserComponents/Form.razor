@@ -1,5 +1,53 @@
-﻿<h3>Form</h3>
+﻿@inject IUserRepository userRepository
 
-@code {
+<EditForm Model="user" OnValidSubmit="SubmitCallback" dir="rtl">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="row mt-5">
+        <div class="col-6 form-group text-right mb-4">
+            <label>نام</label>
+            <input class="form-control" @bind-value="user.Name" type="text" />
+        </div>
 
-}
+        <div class="col-6 form-group text-right mb-4">
+            <label>نقش</label>
+            <select class="form-control" @bind="user.RoleId">
+                @if (roles != null && roles.Count > 0)
+                {
+                    @foreach (Role item in roles)
+                    {
+                        <option value="@item.Id">@item.FaCaption</option>
+                    }
+                }
+                else
+                {
+                    <option value="0">هیچ نقشی یافت نشد</option>
+                }
+            </select>
+        </div>
+
+        <div class="col-6 form-group text-right mb-4">
+            <label>نام خانوادگی </label>
+            <input class="form-control" @bind-value="user.LastName" type="text" />
+        </div>
+        <div class="col-6 form-group text-right mb-4">
+            <label>ایمیل</label>
+            <input class="form-control" @bind-value="user.Email" type="email" />
+        </div>
+        <div class="col-6 form-group text-right mb-4">
+            <label>شغل </label>
+            <input class="form-control" @bind-value="user.Job" type="text" />
+        </div>
+        <div class="col-6 form-group text-right mb-4">
+            <label>توضیحات </label>
+            <input class="form-control" @bind-value="user.Bio" type="text" />
+        </div>
+        <div class="col-6 form-group text-right mb-4">
+            <label>کلمه عبور </label>
+            <input class="form-control" @bind-value="user.Password" type="password" />
+        </div>
+        <div class="col-12 form-group text-right">
+            <button type="submit" class="mt-2 btn btn-success">ثبت اطلاعات</button>
+        </div>
+    </div>
+</EditForm>

@@ -32,12 +32,8 @@ namespace Blazor_10.Client.Services
         {
             if (!await _loginService.CheckToken())
             {
-                Console.WriteLine("زمان استفاده به پایان رسید");
                 await _loginService.CleanUp();
                 Dispose();
-            }else
-            {
-                Console.WriteLine("توکن مجاز است");
             }
         }
 

@@ -49,7 +49,6 @@ namespace Blazor_10.Client.Services
         }
         public async Task<bool> CheckToken()
         {
-            Console.WriteLine("چک کردن توکن");
             string expiration = await _jsRuntime.GetItem(_expirationKey);
             DateTime nowDate = DateTime.Now;
             if (!string.IsNullOrEmpty(expiration))
@@ -58,23 +57,19 @@ namespace Blazor_10.Client.Services
                 var diff = targetDate.Subtract(nowDate).TotalSeconds;
                 if (diff > 0)
                 {
-                    Console.WriteLine("TRUE");
                     return true;
                 }
                 else
                 {
-                    Console.WriteLine("FALSE 1");
                     return false;
                 }
             }else
             {
-                Console.WriteLine("FALSE 2");
                 return false;
             }
         }
         public async Task CleanUp()
         {
-            Console.WriteLine("متد پاک کردن توکن");
             await _jsRuntime.RemoveItem(_tokenKey);
             await _jsRuntime.RemoveItem(_expirationKey);
             _http.DefaultRequestHeaders.Authorization = null;
