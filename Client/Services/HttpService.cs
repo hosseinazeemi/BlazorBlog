@@ -1,4 +1,6 @@
-﻿using Blazor_10.Shared.Helper;
+﻿using Blazor_10.Shared.Entities;
+using Blazor_10.Shared.Helper;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +14,7 @@ namespace Blazor_10.Client.Services
     public class HttpService : IHttpService
     {
         private JsonSerializerOptions defaultJsonSerializerOptions =>
-            new JsonSerializerOptions() { PropertyNameCaseInsensitive = true };
+            new JsonSerializerOptions() { PropertyNameCaseInsensitive = true};
         private readonly HttpClient _http;
         public HttpService(HttpClient http)
         {
@@ -21,7 +23,7 @@ namespace Blazor_10.Client.Services
 
         public async Task<ResponseData<object>> PostAsync<T>(string url, T data)
         {
-            var dataSerialize = JsonSerializer.Serialize(data);
+            var dataSerialize = System.Text.Json.JsonSerializer.Serialize(data);
             var content = new StringContent(dataSerialize, Encoding.UTF8, "application/json");
             var response = await _http.PostAsync(url, content);
 
@@ -30,7 +32,7 @@ namespace Blazor_10.Client.Services
 
         public async Task<ResponseData<TResponse>> PostAsync<T, TResponse>(string url, T data)
         {
-            var dataJson = JsonSerializer.Serialize(data);
+            var dataJson = System.Text.Json.JsonSerializer.Serialize(data);
             var stringContent = new StringContent(dataJson, Encoding.UTF8, "application/json");
             var response = await _http.PostAsync(url, stringContent);
             if (response.IsSuccessStatusCode)
@@ -46,9 +48,8 @@ namespace Blazor_10.Client.Services
         private async Task<T> Deserialize<T>(HttpResponseMessage httpResponse, JsonSerializerOptions options)
         {
             var responseString = await httpResponse.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<T>(responseString, options);
+            return System.Text.Json.JsonSerializer.Deserialize<T>(responseString, options);
         }
-
         public async Task<ResponseData<T>> Get<T>(string url)
         {
             var responseHTTP = await _http.GetAsync(url);

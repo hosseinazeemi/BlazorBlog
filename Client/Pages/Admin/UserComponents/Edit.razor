@@ -1,0 +1,19 @@
+﻿@page "/admin/users/edit/{Id:long}"
+@layout AdminLayout
+@attribute [Authorize(Roles = "admin")]
+@inject IUserRepository userRepository
+
+<div class="container mt-4 p-5 shadow" dir="rtl">
+    <h3 class="text-right">ویرایش کاربر</h3>
+    @if (ShowMessage)
+    {
+        <p class="alert alert-info text-center font-weight-bold">@Message</p>
+    }
+    @if (User != null)
+    {
+        <Form user="User" SubmitCallback="UpdateUser" />
+    }else
+    {
+        <FormLoading />
+    }
+</div>

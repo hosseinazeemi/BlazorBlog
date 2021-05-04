@@ -18,7 +18,6 @@ namespace Blazor_10.Shared.Entities
         [EmailAddress(ErrorMessage = "آدرس ایمیل را بدرستی وارد کنید")]
         public string Email { get; set; }
 
-        [Required(ErrorMessage = "وارد کردن کلمه عبور الزامی است")]
         [DataType(DataType.Password, ErrorMessage = "کلمه عبور را بدرستی وارد کنید")]
         public string Password { get; set; }
         public string Job { get; set; } = null;

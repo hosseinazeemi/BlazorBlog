@@ -2,6 +2,7 @@
 using Blazor_10.Shared.Entities;
 using Blazor_10.Shared.Helper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,12 +38,70 @@ namespace Blazor_10.Server.Controllers
         [HttpPost("createUser")]
         public async Task<bool> CreateUser([FromBody] User user)
         {
-            user.Password = _protect.HashPassword(user.Password);
+            if (!string.IsNullOrEmpty(user.Password))
+            {
+                user.Password = _protect.HashPassword(user.Password);
+            }
             _appDbContext.Users.Add(user);
 
             await _appDbContext.SaveChangesAsync();
 
             return true;
+        }
+
+        [HttpGet("userList")]
+        public async Task<List<User>> GetUsers()
+        {
+            var users = _appDbContext.Users.OrderByDescending(p => p.Id).ToList();
+
+            return await Task.FromResult(users);
+        }
+
+        [HttpPost("getUserById")]
+        public async Task<User> GetUserById([FromBody] long Id)
+        {
+            var result = _appDbContext.Users.Where(p => p.Id == Id).FirstOrDefault();
+
+            if (result != null)
+            {
+                return await Task.FromResult(result);
+            }else
+            {
+                return await Task.FromResult(new User());
+            }
+        }
+
+        [HttpPost("updateUser")]
+        public async Task<bool> UpdateUser([FromBody]User user)
+        {
+            _appDbContext.Users.Update(user);
+            
+            try
+            {
+                await _appDbContext.SaveChangesAsync();
+                return await Task.FromResult(true);
+            }
+            catch (Exception)
+            {
+                return await Task.FromResult(false);
+            }
+        }
+
+        [HttpPost("deleteUser")]
+        public async Task<bool> DeleteUser([FromBody]User user)
+        {
+            _appDbContext.Users.Remove(user);
+
+            try
+            {
+                await _appDbContext.SaveChangesAsync();
+
+                return await Task.FromResult(true);
+            }
+            catch (Exception)
+            {
+                return await Task.FromResult(false);
+            }
         }
     }
 }

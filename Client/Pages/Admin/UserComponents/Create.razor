@@ -1,7 +1,7 @@
 ﻿@page "/admin/users/create"
 @layout AdminLayout
 @inject IUserRepository userRepository
-
+@attribute [Authorize(Roles = "admin")]
 
 <div class="container shadow p-5 mt-4" dir="rtl">
     <h3 class="text-right">ثبت کاربر</h3>

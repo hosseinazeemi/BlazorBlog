@@ -58,13 +58,14 @@ namespace Blazor_10.Server.Controllers
             var claims = new List<Claim>()
             {
                 new Claim(ClaimTypes.Name , user.Name),
-                new Claim(ClaimTypes.Email , user.Email)
+                new Claim(ClaimTypes.Email , user.Email),
+                new Claim(ClaimTypes.Role , user.Role.EnCaption)
             };
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["jwt:key"]));
             var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             
-            var expiration = DateTime.Now.AddMinutes(1);
+            var expiration = DateTime.Now.AddDays(30);
             JwtSecurityToken token = new JwtSecurityToken(
                 issuer: null,
                 audience: null,

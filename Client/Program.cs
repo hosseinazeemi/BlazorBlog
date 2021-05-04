@@ -39,6 +39,7 @@ namespace Blazor_10.Client
             builder.Services.AddScoped<IUserAuthService, JWTService>(
                 option => option.GetRequiredService<JWTService>()
             );
+           
             await builder.Build().RunAsync();
         }
     }

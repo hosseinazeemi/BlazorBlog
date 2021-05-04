@@ -1,5 +1,43 @@
-﻿<h3>List</h3>
+﻿@page "/admin/users"
+@attribute [Authorize(Roles = "admin")]
+@layout AdminLayout
+@inject IUserRepository userRepository
+@inject NavigationManager navigation
 
-@code {
+<div class="container mt-4 p-5 shadow">
+    <h3 class="text-right">لیست کاربران</h3>
 
-}
+    <table class="table table-responsive mt-3 m-auto">
+        <tr>
+            <th>کد</th>
+            <th>نام</th>
+            <th>نام خانوداگی</th>
+            <th>ایمیل</th>
+            <th>شغل</th>
+            <th>توضیحات</th>
+            <th>تنظیمات</th>
+        </tr>
+        @if (Users != null && Users.Count > 0)
+        {
+            foreach (User item in Users)
+            {
+                <tr>
+                   <td>@item.Id</td>
+                   <td>@item.Name</td>
+                   <td>@item.LastName</td>
+                   <td>@item.Email</td>
+                   <td>@item.Job</td>
+                   <td>@item.Bio</td>
+                   <td>
+                       <button class="btn btn-primary rounded-pill" @onclick="@(() => EditUser(item.Id))">ویرایش</button>
+                       <button class="btn btn-danger rounded-pill" @onclick="@(() => DeleteUser(item))">حذف</button>
+                   </td>
+                </tr>
+            }
+        }else
+        {
+            <tr><td>لیست خالی است</td></tr>
+        }
+
+    </table>
+</div>

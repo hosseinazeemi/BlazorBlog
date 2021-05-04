@@ -1,8 +1,8 @@
 ﻿@layout AdminLayout
 @page "/admin"
+@attribute [Authorize(Roles = "admin")]
 
 <h3>Dashboard</h3>
 
 @code {
-
 }

@@ -29,5 +29,33 @@ namespace Blazor_10.Client.Repositories
 
             return result;
         }
+
+        public async Task<ResponseData<List<User>>> GetAllUsers()
+        {
+            var result = await _http.Get<List<User>>($"{_URL}/userList");
+
+            return result;
+        }
+
+        public async Task<ResponseData<User>> GetUserById(long Id)
+        {
+            var result = await _http.PostAsync<long, User>($"{_URL}/getUserById" , Id);
+
+            return result;
+        }
+
+        public async Task<ResponseData<bool>> UpdateUser(User user)
+        {
+            var result = await _http.PostAsync<User, bool>($"{_URL}/updateUser" , user);
+
+            return result;
+        }
+
+        public async Task<ResponseData<bool>> DeleteUser(User user)
+        {
+            var result = await _http.PostAsync<User, bool>($"{_URL}/deleteUser" , user);
+
+            return result;
+        }
     }
 }

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Blazor_10.Client.Pages.Admin.UserComponents
@@ -14,6 +15,7 @@ namespace Blazor_10.Client.Pages.Admin.UserComponents
 
         private async Task CreateUser()
         {
+            
             var response = await userRepository.CreateUser(User);
             ShowMessage = true;
             if (response.Success)
