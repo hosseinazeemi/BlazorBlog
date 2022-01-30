@@ -1,0 +1,13 @@
+﻿@page "/admin/categories/create"
+@layout AdminLayout
+@attribute [Authorize(Roles = "admin")]
+@inject ICategoryRepository categoryRepository
+
+<div class="container shadow p-5 mt-4" dir="rtl">
+    <h3 class="text-right">ثبت دسته بندی</h3>
+    @if (ShowMessage)
+    {
+        <p class="alert alert-info text-center font-weight-bold">@Message</p>
+    }
+    <Form category="category" SubmitCallback="CreateCategory" />
+</div>

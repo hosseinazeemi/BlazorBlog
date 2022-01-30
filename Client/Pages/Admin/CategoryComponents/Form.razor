@@ -1,0 +1,17 @@
+﻿
+
+<EditForm Model="category" OnValidSubmit="SubmitCallback" dir="rtl">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="row mt-5">
+
+        <div class="col-6 form-group text-right mb-4">
+            <label>نام</label>
+            <input class="form-control" @bind-value="category.Name" type="text" />
+        </div>
+
+        <div class="col-12 form-group text-right">
+            <button type="submit" class="mt-2 btn btn-success">ثبت اطلاعات</button>
+        </div>
+    </div>
+</EditForm>

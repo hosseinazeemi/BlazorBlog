@@ -32,6 +32,7 @@ namespace Blazor_10.Client
             builder.Services.AddAuthorizationCore();
             builder.Services.AddOptions();
             builder.Services.AddScoped<IUserRepository , UserRepository>();
+            builder.Services.AddScoped<ICategoryRepository , CategoryRepository>();
             builder.Services.AddScoped<JWTService>();
             builder.Services.AddScoped<AuthenticationStateProvider, JWTService>(
                 option => option.GetRequiredService<JWTService>()

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Blazor_10.Server.Context
 {
-    public class AppDbContext:DbContext
+    public class AppDbContext : DbContext
     {
         public AppDbContext(DbContextOptions options) : base(options)
         {
@@ -34,6 +34,11 @@ namespace Blazor_10.Server.Context
             model.Entity<User>()
                 .HasOne(p => p.Status);
 
+            model.Entity<Blog>()
+                .HasOne(p => p.Category)
+                .WithMany(p => p.Blogs)
+                .HasForeignKey(p => p.CategoryId);
+
         }
         public DbSet<Blog> Blogs { get; set; }
         public DbSet<Comment> Comments { get; set; }
@@ -41,5 +46,6 @@ namespace Blazor_10.Server.Context
         public DbSet<Setting> Setting { get; set; }
         public DbSet<Status> Status { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Category> Categories { get; set; }
     }
 }
