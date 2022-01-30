@@ -1,0 +1,70 @@
+﻿@using Tewr.Blazor.FileReader
+@using System.IO
+@inject IFileReaderService fileReader
+
+<div class="col-md-12 p-3">
+    <h4>انتخاب تصویر</h4>
+    <div class="col-md-12 p-3">
+        <input type="file" @ref="ImageReference" @onchange="ImageFileSelected" />
+    </div>
+
+    @if (ImageByteString != null)
+    {
+        <div class="col-md-12 p-3"> 
+            <img src="data:image/jpeg;base64 , @Convert.ToBase64String(ImageByteString)" width="420" class="rounded shadow"  />
+        </div>
+        <div class="col-md-12 p-3">
+            <a class="btn btn-success" @onclick="ConfirmImage">تایید تصویر</a>
+            <a class="btn btn-danger" @onclick="RemoveImage">حذف تصویر</a>
+        </div>
+        
+    }
+    else
+    {
+        <div class="col-12 p-3">
+            <img src="/assets/imgs/nophoto.png" class="rounded shadow" width="360" />
+        </div>
+    }
+
+    @if (!string.IsNullOrEmpty(ShowMessage))
+    {
+<div class="col-md-12">
+    <p>@ShowMessage</p>
+</div>
+    }
+
+
+</div>
+
+
+@code {
+    ElementReference ImageReference;
+    public byte[] ImageByteString { get; set; }
+    [Parameter]
+    public EventCallback<byte[]> ImageCallback { get; set; }
+    public string ShowMessage { get; set; }
+
+    private async Task ImageFileSelected()
+    {
+        foreach (var file in await fileReader.CreateReference(ImageReference).EnumerateFilesAsync())
+        {
+            using (MemoryStream ms = await file.CreateMemoryStreamAsync(4 * 1024))
+            {
+                ImageByteString = new byte[ms.Length];
+                ms.Read(ImageByteString, 0, (int)ms.Length);
+                Console.WriteLine(file.ReadFileInfoAsync().Result.Name);
+                Console.WriteLine(file.ReadFileInfoAsync().Result.Name.Split(".")[1]);
+                Console.WriteLine(file.ReadFileInfoAsync().Result.Name.Split(".")[0]);
+            }
+        }
+    }
+    public async Task ConfirmImage()
+    {
+        await ImageCallback.InvokeAsync(ImageByteString);
+        ShowMessage = "تصویر شما تایید شد";
+    }
+    public void RemoveImage()
+    {
+        ImageByteString = null;
+    }
+}

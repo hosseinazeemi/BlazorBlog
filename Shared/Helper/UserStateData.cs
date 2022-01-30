@@ -8,6 +8,7 @@ namespace Blazor_10.Shared.Helper
 {
     public class UserStateData
     {
+        public string Id { get; set; }
         public string Email { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }

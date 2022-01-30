@@ -1,13 +1,18 @@
-﻿@page "/admin/blogs/create"
+﻿@page "/admin/blogs/edit/{Id:long}"
 @layout AdminLayout
 @attribute [Authorize(Roles = "admin")]
 @inject IBlogRepository blogRepository
-@inject AuthenticationStateProvider authState
+@inject AuthenticationStateProvider auth
 
 <div class="container shadow p-5 mt-4" dir="rtl">
-    <h3 class="text-right">ثبت مقاله</h3>
+    <h3 class="text-right">ویرایش مقاله</h3>
     @if (ShowMessage)
     {
 <p class="alert alert-info text-center font-weight-bold">@Message</p>}
-    <Form blog="blog" SubmitCallback="CreateBlog" />
+    @if (blog != null)
+    {
+<Form blog="blog" SubmitCallback="UpdateBlog" /> }
+else
+{
+<FormLoading />}
 </div>

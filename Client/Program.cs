@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Tewr.Blazor.FileReader;
 
 namespace Blazor_10.Client
 {
@@ -28,10 +29,12 @@ namespace Blazor_10.Client
             builder.Services.AddScoped<ProtectPassword>();
             builder.Services.AddSingleton<UserStateService>();
             builder.Services.AddScoped<GenerateNewToken>();
-
-            builder.Services.AddAuthorizationCore();
             builder.Services.AddOptions();
+            builder.Services.AddAuthorizationCore();
+
             builder.Services.AddScoped<IUserRepository , UserRepository>();
+            builder.Services.AddScoped<ICategoryRepository , CategoryRepository>();
+            builder.Services.AddScoped<IBlogRepository , BlogRepository>();
             builder.Services.AddScoped<JWTService>();
             builder.Services.AddScoped<AuthenticationStateProvider, JWTService>(
                 option => option.GetRequiredService<JWTService>()
@@ -39,7 +42,7 @@ namespace Blazor_10.Client
             builder.Services.AddScoped<IUserAuthService, JWTService>(
                 option => option.GetRequiredService<JWTService>()
             );
-           
+            builder.Services.AddFileReaderService();
             await builder.Build().RunAsync();
         }
     }

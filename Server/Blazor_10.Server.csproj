@@ -20,5 +20,9 @@
 		<ProjectReference Include="..\Shared\Blazor_10.Shared.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="wwwroot\Images\" />
+	</ItemGroup>
+
 
 </Project>

@@ -1,0 +1,36 @@
+﻿@page "/admin/categories/list"
+@inject ICategoryRepository categoryRepository
+@attribute [Authorize(Roles = "admin")]
+@layout AdminLayout
+@inject ICategoryRepository categoryRepository
+@inject NavigationManager navigation
+
+<div class="container mt-4 p-5 shadow">
+    <h3 class="text-right">لیست دسته بندی</h3>
+
+    <table class="table table-responsive mt-3 m-auto">
+        <tr>
+            <th>کد</th>
+            <th>نام</th>
+        </tr>
+        @if (Categories != null && Categories.Count > 0)
+        {
+            foreach (Category item in Categories)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.Name</td>
+                    <td>
+                        <button class="btn btn-primary rounded-pill" @onclick="@(() => EditCategory(item.Id))">ویرایش</button>
+                        <button class="btn btn-danger rounded-pill" @onclick="@(() => DeleteCategory(item))">حذف</button>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr><td>لیست خالی است</td></tr>
+        }
+
+    </table>
+</div>

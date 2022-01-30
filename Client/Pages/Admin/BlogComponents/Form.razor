@@ -1,5 +1,37 @@
-﻿<h3>Form</h3>
+﻿
+<EditForm Model="blog" OnValidSubmit="SubmitCallback" dir="rtl">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="row mt-5">
+        <div class="col-12 form-group text-right mb-4">
+            <label>دسته بندی</label>
+            <select class="form-control" @bind="blog.CategoryId">
+                @if (categories != null && categories.Count > 0)
+                {
+                    <option value="0">یک دسته بندی انتخاب کنید</option>
 
-@code {
-
-}
+                    @foreach (Category item in categories)
+                    {
+                        <option value="@item.Id">@item.Name</option>                    } 
+                }
+                else
+                {
+<option value="0">هیچ دسته بندی یافت نشد</option>                }
+            </select>
+        </div>
+        <div class="col-12 form-group text-right mb-4">
+            <label>عنوان</label>
+            <input class="form-control" @bind-value="blog.Title" type="text" />
+        </div>
+        <div class="col-12 form-group text-right mb-4">
+            <label>توضیحات</label>
+            <textarea @bind="blog.Description" class="form-control" rows="8" cols="20"></textarea>
+        </div>
+        <div class="col-12 form-group text-right mb-4">
+            <ImageComponent ImageCallback="@AssignImage" />
+        </div>
+        <div class="col-12 form-group text-right">
+            <button type="submit" class="mt-2 btn btn-success">ثبت اطلاعات</button>
+        </div>
+    </div>
+</EditForm>
