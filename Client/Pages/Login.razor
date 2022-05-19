@@ -16,6 +16,12 @@
                 <div class="padding_eight_all bg-white" dir="rtl">
                     <div class="heading_s1">
                         <h3 class="mb-30 text-center">ورود</h3>
+                        @if (ShowLoading)
+                        {
+                            <div>
+                                <FormLoading />
+                            </div>
+                        }
                         <AuthorizeView>
                             <Authorized>
                                 <p class="text-center alert alert-success">ورود موفقیت آمیز</p>
@@ -24,10 +30,6 @@
                                 @if (ShowError)
                                 {
                                     <p class="text-center alert alert-danger">اطلاعات وارد شده صحیح نیست</p>
-                                }
-                                else
-                                {
-                                    <p class="text-center alert alert-info">در حال بررسی</p>
                                 }
                             </NotAuthorized>
                         </AuthorizeView>
@@ -55,6 +57,7 @@
 @code {
     UserData User;
     bool ShowError = false;
+    bool ShowLoading = false;
     [CascadingParameter] public Task<AuthenticationState> authenticaionState { get; set; }
     protected override void OnInitialized()
     {
@@ -64,8 +67,11 @@
     private async Task LoginUser()
     {
         tokenService.Dispose();
+        ShowLoading = true;
         var response = await authRepo.Login(User);
         var authentication = await authenticaionState;
+        await Task.Delay(200);
+        ShowLoading = false;
         if (response.Status)
         {
             tokenService.Initiate();

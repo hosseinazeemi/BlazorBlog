@@ -30,7 +30,6 @@ namespace Blazor_10.Client.Repositories
 
             return result;
         }
-
         public async Task<ResponseData<Blog>> GetBlogById(long Id)
         {
             var result = await _http.PostAsync<long, Blog>($"{_URL}/getBlogById", Id);

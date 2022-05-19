@@ -17,15 +17,16 @@
                     <div class="vline-space d-inline-block"></div>
                     <div class="user-account d-inline-block font-small">
                         <a class="dropdown-toggle font-weight-bold" href="#" role="button" id="userMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="ti-user"></i>
+                            <i class="fa fa-user"></i>
                             <span>حساب کاربری</span>
                         </a>
                         <div id="userMenuDropdow" class="dropdown-menu dropdown-menu-right text-right shadow" aria-labelledby="userMenu">
-                            <a class="dropdown-item" href="#"><i class="ti-pencil-alt"></i>ویرایش اطلاعات</a>
-                            <a class="dropdown-item" href="#"><i class="ti-settings"></i>ثبت مقاله جدید</a>
-                            <a class="dropdown-item" href="#"><i class="ti-stats-up"></i>لیست مقاله های من</a>
+                            <a class="dropdown-item" href="#">ویرایش اطلاعات</a>
+                            <a class="dropdown-item" href="#">ثبت مقاله جدید</a>
+                            <a class="dropdown-item" href="#">لیست مقاله های من</a>
                             <div class="dropdown-divider"></div>
-                            <button type="button" class="dropdown-item" @onclick="Logout"><i class="ti-share"></i>خروج</button>
+                            <a class="dropdown-item" @onclick="Logout">خروج
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -45,21 +46,21 @@
                         <nav>
                             <ul id="navigation" class="main-menu text-right " dir="rtl">
                                 <li>
-                                    <NavLink href="index.html" class="font-weight-bold">خانه</NavLink>
+                                    <a href="/" class="font-weight-bold">خانه</a>
                                 </li>
                                 <li class="menu-item-has-children" dir="rtl">
-                                    <NavLink href="index.html" class="font-weight-bold">مقاله ها</NavLink>
+                                    <a class="font-weight-bold">مقاله ها</a>
                                     <ul class="sub-menu">
-                                        <li><NavLink href="/Blog/Detail/2" class="text-right">بهترین نسخه اندروید کدام است ؟</NavLink></li>
-                                        <li><NavLink href="/Blog/Detail/2" class="text-right">چه لپ تاپی خوب است ؟</NavLink></li>
-                                        <li><NavLink href="/Blog/Detail/2" class="text-right">نحوه محاسبه قیمت سکه</NavLink></li>
+                                        <li><a href="/Blog/Detail/2" class="text-right">بهترین نسخه اندروید کدام است ؟</a></li>
+                                        <li><a href="/Blog/Detail/2" class="text-right">چه لپ تاپی خوب است ؟</a></li>
+                                        <li><a href="/Blog/Detail/2" class="text-right">نحوه محاسبه قیمت سکه</a></li>
                                     </ul>
                                 </li>
                                 <li>
-                                    <NavLink href="/Register" class="font-weight-bold">ثبت نام</NavLink>
+                                    <a href="/Register" class="font-weight-bold">ثبت نام</a>
                                 </li>
                                 <li>
-                                    <NavLink href="/Login" class="font-weight-bold">ورود</NavLink>
+                                    <a href="/Login" class="font-weight-bold">ورود</a>
 
                                 </li>
 
