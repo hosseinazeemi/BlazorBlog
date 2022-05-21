@@ -6,120 +6,68 @@
                 <div class="col-lg-4 col-md-6 mb-lg-0 mb-30">
                     <div class="sidebar-widget widget-latest-posts mb-30">
                         <div class="widget-header position-relative mb-30">
-                            <h5 class="widget-title mt-5 mb-30 color-white">متفرقه</h5>
+                            <h5 class="widget-title mt-5 mb-30 color-white">آخرین مقالات</h5>
                             <div class="letter-background">W</div>
                         </div>
                         <div class="post-block-list post-module-1 post-module-5">
-                            <ul class="list-post">
-                                <li class="mb-30">
-                                    <div class="d-flex">
-                                        <div class="post-thumb d-flex ml-15 border-radius-5 img-hover-scale">
-                                            <a class="color-white" href="single.html">
-                                                <img src="assets/imgs/thumbnail-1.jpg" alt="">
-                                            </a>
-                                        </div>
-                                        <div class="post-content media-body">
-                                            <h6 class="post-title mb-10 text-limit-2-row"><a class="color-white" href="single.html">داستان مرد فراری</a></h6>
-                                            <div class="entry-meta meta-1 font-x-small color-grey">
-                                                <span class="post-on">25 April</span>
-                                                <span class="hit-count has-dot">26k Views</span>
+                            @if (lastBlogs != null && lastBlogs.Count > 0)
+                            {
+                                <ul class="list-post">
+                                    @foreach (var item in lastBlogs)
+                                    {
+                                    <li class="mb-30">
+                                        <div class="d-flex">
+                                            <div class="post-thumb d-flex ml-15 border-radius-5 img-hover-scale">
+                                                <a class="color-white" href="/Blog/Detail/@item.Id">
+                                                    <img src="@item.Photo" alt="">
+                                                </a>
+                                            </div>
+                                            <div class="post-content media-body">
+                                                <h6 class="post-title mb-10 text-limit-2-row"><a class="color-white" href="single.html">@item.Title</a></h6>
+                                                <div class="entry-meta meta-1 font-x-small color-grey">
+                                                    <span class="hit-count has-dot">@item.Likes پسندیده</span>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </li>
-                                <li class="mb-30">
-                                    <div class="d-flex">
-                                        <div class="post-thumb d-flex ml-15 border-radius-5 img-hover-scale">
-                                            <a class="color-white" href="single.html">
-                                                <img src="assets/imgs/thumbnail-2.jpg" alt="">
-                                            </a>
-                                        </div>
-                                        <div class="post-content media-body">
-                                            <h6 class="post-title mb-10 text-limit-2-row"><a class="color-white" href="single.html">خبرساز ترین جوان ایرانی</a></h6>
-                                            <div class="entry-meta meta-1 font-x-small color-grey mt-10">
-                                                <span class="post-on">25 April</span>
-                                                <span class="hit-count has-dot">37k Views</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="mb-30">
-                                    <div class="d-flex">
-                                        <div class="post-thumb d-flex ml-15 border-radius-5 img-hover-scale">
-                                            <a class="color-white" href="single.html">
-                                                <img src="assets/imgs/thumbnail-3.jpg" alt="">
-                                            </a>
-                                        </div>
-                                        <div class="post-content media-body">
-                                            <h6 class="post-title mb-10 text-limit-2-row"><a class="color-white" href="single.html">روحانی به امریکا می رود</a></h6>
-                                            <div class="entry-meta meta-1 font-x-small color-grey mt-10">
-                                                <span class="post-on">25 April</span>
-                                                <span class="hit-count has-dot">54k Views</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
+                                    </li>
+                                    }
+                                </ul>
+                            }
+
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-4 col-md-6 mb-lg-0 mb-30">
+                   <div class="col-lg-4 col-md-6 mb-lg-0 mb-30">
                     <div class="sidebar-widget widget-latest-posts mb-30">
                         <div class="widget-header position-relative mb-30">
-                            <h5 class="widget-title mt-5 mb-30 color-white">بیشترین بازدید</h5>
-                            <div class="letter-background">M</div>
+                            <h5 class="widget-title mt-5 mb-30 color-white">محبوب ترین ها</h5>
+                            <div class="letter-background">W</div>
                         </div>
                         <div class="post-block-list post-module-1 post-module-5">
-                            <ul class="list-post">
-                                <li class="mb-30">
-                                    <div class="d-flex">
-                                        <div class="post-thumb d-flex ml-15 border-radius-5 img-hover-scale">
-                                            <a class="color-white" href="single.html">
-                                                <img src="assets/imgs/thumbnail-13.jpg" alt="">
-                                            </a>
-                                        </div>
-                                        <div class="post-content media-body">
-                                            <h6 class="post-title mb-10 text-limit-2-row"><a class="color-white" href="single.html">لیست بهترین داروهای گیاهی</a></h6>
-                                            <div class="entry-meta meta-1 font-x-small color-grey">
-                                                <span class="post-on">25 April</span>
-                                                <span class="hit-count has-dot">26k Views</span>
+                            @if (popularList != null && popularList.Count > 0)
+                            {
+                                <ul class="list-post">
+                                    @foreach (var item in popularList)
+                                    {
+                                    <li class="mb-30">
+                                        <div class="d-flex">
+                                            <div class="post-thumb d-flex ml-15 border-radius-5 img-hover-scale">
+                                                <a class="color-white" href="/Blog/Detail/@item.Id">
+                                                    <img src="@item.Photo" alt="">
+                                                </a>
+                                            </div>
+                                            <div class="post-content media-body">
+                                                <h6 class="post-title mb-10 text-limit-2-row"><a class="color-white" href="single.html">@item.Title</a></h6>
+                                                <div class="entry-meta meta-1 font-x-small color-grey">
+                                                    <span class="hit-count has-dot">@item.Likes پسندیده</span>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </li>
-                                <li class="mb-30">
-                                    <div class="d-flex">
-                                        <div class="post-thumb d-flex ml-15 border-radius-5 img-hover-scale">
-                                            <a class="color-white" href="single.html">
-                                                <img src="assets/imgs/thumbnail-5.jpg" alt="">
-                                            </a>
-                                        </div>
-                                        <div class="post-content media-body">
-                                            <h6 class="post-title mb-10 text-limit-2-row"><a class="color-white" href="single.html">وزارت بهداشت در مورد بیماری کرونا گفت</a></h6>
-                                            <div class="entry-meta meta-1 font-x-small color-grey mt-10">
-                                                <span class="post-on">25 April</span>
-                                                <span class="hit-count has-dot">37k Views</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="mb-30">
-                                    <div class="d-flex">
-                                        <div class="post-thumb d-flex ml-15 border-radius-5 img-hover-scale">
-                                            <a class="color-white" href="single.html">
-                                                <img src="assets/imgs/thumbnail-11.jpg" alt="">
-                                            </a>
-                                        </div>
-                                        <div class="post-content media-body">
-                                            <h6 class="post-title mb-10 text-limit-2-row"><a class="color-white" href="single.html">عامل اصلی بیماری کرونا</a></h6>
-                                            <div class="entry-meta meta-1 font-x-small color-grey mt-10">
-                                                <span class="post-on">25 April</span>
-                                                <span class="hit-count has-dot">54k Views</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
+                                    </li>
+                                    }
+                                </ul>
+                            }
+
                         </div>
                     </div>
                 </div>
@@ -164,3 +112,9 @@
     </div>
     <!-- Footer End-->
 </footer>
+@code {
+    [Parameter]
+    public List<LastBlogDTO> lastBlogs { get; set; }
+    [Parameter]
+    public List<PopularDTO> popularList { get; set; }
+}

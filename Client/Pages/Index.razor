@@ -14,7 +14,7 @@
                             <article class="col-lg-4 col-md-6 col-sm-12 mb-30 text-right">
                                 <div class="post-thumb position-relative">
                                     <div class="thumb-overlay img-hover-slide border-radius-5 position-relative"
-                                    style="background-image: url(@item.Photo)">
+                             style="background-image: url(@item.Photo)">
                                         <a class="img-link" href="/Blog/Detail/@item.Id"></a>
                                         <div class="post-content-overlay">
                                             <h6 class="post-title">
@@ -31,7 +31,8 @@
                     {
                         <p>هیچ مقاله ای یافت نشد</p>
                     }
-                }else
+                }
+                else
                 {
                     <FormLoading />
                 }
@@ -41,22 +42,13 @@
     </div>
 </div>
 @code {
-    List<Blog> Blogs;
+    [CascadingParameter]
+    public MainLayout Layout { get; set; }
 
+    List<IndexBlogDTO> Blogs;
     protected override async Task OnInitializedAsync()
     {
-        var result = await blogRepository.GetAllBlogs();
-        await Task.Delay(2000);
-        if (result.Success)
-        {
-            if (result.Response != null && result.Response.Count > 0)
-            {
-                Blogs = result.Response;
-            }
-            else
-            {
-                Blogs = new List<Blog>();
-            }
-        }
+        Blogs = Layout.Blogs;
+
     }
 }

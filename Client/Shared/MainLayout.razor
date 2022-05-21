@@ -1,30 +1,60 @@
 ﻿@inherits LayoutComponentBase
 @inject GenerateNewToken newToken
-
-
+@inject IBlogRepository blogRepository
 <div class="scroll-progress primary-bg"></div>
 <!-- Preloader Start -->
 <div class="main-wrap main">
-    <Header />
+    <Header menuList="MenuList" />
 
     <main class="position-relative">
         <!--archive header-->
         <BreadCrumb />
         <!--main content-->
         <div class="main_content sidebar_right pb-50">
-            @Body
+            @if (ShowData)
+            {
+                <CascadingValue Value="this">
+                    @Body
+                </CascadingValue>
+            }
         </div>
     </main>
 
-    <Footer />
+    <Footer lastBlogs="LastBlogList" popularList="PopularList" />
 </div>
 <!-- Main Wrap End-->
 <div class="dark-mark"></div>
 <!-- Vendor JS-->
+@code {
 
-@code{
-    protected override void OnInitialized()
+    public List<IndexBlogDTO> Blogs;
+    public List<MenuDTO> MenuList;
+    public List<LastBlogDTO> LastBlogList;
+    public List<PopularDTO> PopularList;
+    public bool ShowData { get; set; } = false;
+    protected override async Task OnInitializedAsync()
     {
+        var result = await blogRepository.GetAllBlogs();
+        if (result.Success)
+        {
+            if (result.Response != null && result.Response.Count > 0)
+            {
+                Blogs =  result.Response.Select(p => new IndexBlogDTO { Id = p.Id, Title = p.Title, Photo = p.Photo, Likes = p.Like }).ToList();
+                MenuList = result.Response.Select(p => new MenuDTO { Id = p.Id, Title = p.Title }).ToList();
+                LastBlogList = result.Response.Select(p => new LastBlogDTO { Id = p.Id, Title = p.Title, Photo = p.Photo, Likes = p.Like })
+                .OrderByDescending(p => p.Likes).ToList();
+                PopularList = result.Response.Select(p => new PopularDTO { Id = p.Id, Title = p.Title, Photo = p.Photo , Likes = p.Like})
+                .OrderByDescending(p => p.Likes).ToList();
+            }
+            else
+            {
+                Blogs = new List<IndexBlogDTO>();
+                MenuList = new List<MenuDTO>();
+                LastBlogList = new List<LastBlogDTO>();
+                PopularList = new List<PopularDTO>();
+            }
+            ShowData = true;
+        }
         newToken.Initiate();
     }
 }

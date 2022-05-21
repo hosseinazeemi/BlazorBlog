@@ -25,7 +25,8 @@
                             <a class="dropdown-item" href="#">ثبت مقاله جدید</a>
                             <a class="dropdown-item" href="#">لیست مقاله های من</a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" @onclick="Logout">خروج
+                            <a class="dropdown-item" @onclick="Logout">
+                                خروج
                             </a>
                         </div>
                     </div>
@@ -36,7 +37,6 @@
 
     <div class="header-bottom header-sticky background-white text-center">
         <div class="mobile_menu d-lg-none d-block">
-
         </div>
         <div class="container">
             <div class="row">
@@ -50,12 +50,19 @@
                                 </li>
                                 <li class="menu-item-has-children" dir="rtl">
                                     <a class="font-weight-bold">مقاله ها</a>
-                                    <ul class="sub-menu">
-                                        <li><a href="/Blog/Detail/2" class="text-right">بهترین نسخه اندروید کدام است ؟</a></li>
-                                        <li><a href="/Blog/Detail/2" class="text-right">چه لپ تاپی خوب است ؟</a></li>
-                                        <li><a href="/Blog/Detail/2" class="text-right">نحوه محاسبه قیمت سکه</a></li>
-                                    </ul>
+                                    @if (menuList != null)
+                                    {
+                                        <ul class="sub-menu">
+                                            @foreach (var item in menuList)
+                                            {
+                                                <li><a href="/Blog/Detail/@item.Id" class="text-right">@item.Title</a></li>
+
+                                            }
+                                        </ul>
+                                    }
                                 </li>
+
+
                                 <li>
                                     <a href="/Register" class="font-weight-bold">ثبت نام</a>
                                 </li>
@@ -73,6 +80,8 @@
     </div>
 </header>
 @code {
+    [Parameter]
+    public List<MenuDTO> menuList { get; set; }
     private async Task Logout()
     {
         await userService.Logout();
