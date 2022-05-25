@@ -7,14 +7,19 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Blazor_10.Client.Services
 {
     public class HttpService : IHttpService
     {
-        private JsonSerializerOptions defaultJsonSerializerOptions =>
-            new JsonSerializerOptions() { PropertyNameCaseInsensitive = true};
+        JsonSerializerOptions defaultJsonSerializerOptions = new()
+        {
+            PropertyNameCaseInsensitive = true ,
+            ReferenceHandler = ReferenceHandler.Preserve,
+        };
+
         private readonly HttpClient _http;
         public HttpService(HttpClient http)
         {

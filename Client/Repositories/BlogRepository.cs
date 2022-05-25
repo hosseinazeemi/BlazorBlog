@@ -1,4 +1,5 @@
 ﻿using Blazor_10.Client.Services;
+using Blazor_10.Shared.DTO;
 using Blazor_10.Shared.Entities;
 using Blazor_10.Shared.Helper;
 using System;
@@ -47,6 +48,13 @@ namespace Blazor_10.Client.Repositories
         public async Task<ResponseData<bool>> DeleteBlog(Blog blog)
         {
             var result = await _http.PostAsync<Blog, bool>($"{_URL}/deleteBlog", blog);
+
+            return result;
+        }
+
+        public async Task<ResponseData<BlogDetailDTO>> GetBlogDetail(long Id)
+        {
+            var result = await _http.PostAsync<long, BlogDetailDTO>($"{_URL}/getBlogDetail", Id);
 
             return result;
         }

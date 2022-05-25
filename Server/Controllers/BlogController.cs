@@ -1,9 +1,11 @@
 ﻿using Blazor_10.Server.Context;
 using Blazor_10.Server.Helpers;
+using Blazor_10.Shared.DTO;
 using Blazor_10.Shared.Entities;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -58,7 +60,25 @@ namespace Blazor_10.Server.Controllers
 
             return await Task.FromResult(blogs);
         }
+        [HttpPost("getBlogDetail")]
+        public async Task<BlogDetailDTO> GetBlogDetail([FromBody] long Id)
+        {
+            // -- detail blog
+            // -- last blogs
+            var result = _appDbContext.Blogs
+                .Where(p => p.Id == Id)
+                .Include(p => p.Comments).FirstOrDefault();
 
+            var lastBlogs = _appDbContext.Blogs.OrderByDescending(p => p.Id).Take(5).ToList();
+
+            BlogDetailDTO blogDetail = new BlogDetailDTO
+            {
+                Blog = result , 
+                LastBlogs = lastBlogs
+            };
+
+            return await Task.FromResult(blogDetail);
+        }
         [HttpPost("getBlogById")]
         public async Task<Blog> GetBlogById([FromBody] long Id)
         {
@@ -77,17 +97,19 @@ namespace Blazor_10.Server.Controllers
         [HttpPost("updateBlog")]
         public async Task<bool> UpdateBlog([FromBody] Blog blog)
         {
+            var findBlog = _appDbContext.Blogs.FirstOrDefault(p => p.Id == blog.Id);
+            if (!string.IsNullOrEmpty(blog.Photo))
+            {
+                if (!string.IsNullOrEmpty(findBlog.Photo))
+                {
+                    await file.DeleteFile(findBlog.Photo, "Images");
+                }
+                blog.Photo = await file.SaveFile(Convert.FromBase64String(blog.Photo), "jpg", "Images");
+            }
             _appDbContext.Blogs.Update(blog);
+            await _appDbContext.SaveChangesAsync();
 
-            try
-            {
-                await _appDbContext.SaveChangesAsync();
-                return await Task.FromResult(true);
-            }
-            catch (Exception)
-            {
-                return await Task.FromResult(false);
-            }
+            return await Task.FromResult(true);
         }
 
         [HttpPost("deleteBlog")]

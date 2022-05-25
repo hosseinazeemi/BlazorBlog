@@ -10,14 +10,20 @@
 
     @if (ImageByteString != null)
     {
-        <div class="col-md-12 p-3"> 
-            <img src="data:image/jpeg;base64 , @Convert.ToBase64String(ImageByteString)" width="420" class="rounded shadow"  />
+        <div class="col-md-12 p-3">
+            <img src="data:image/jpeg;base64 , @Convert.ToBase64String(ImageByteString)" width="420" class="rounded shadow" />
         </div>
         <div class="col-md-12 p-3">
             <a class="btn btn-success" @onclick="ConfirmImage">تایید تصویر</a>
             <a class="btn btn-danger" @onclick="RemoveImage">حذف تصویر</a>
         </div>
-        
+
+    }
+    else if (Photo != null)
+    {
+        <div class="col-12 p-3">
+            <img src="@Photo" class="rounded shadow" width="360" />
+        </div>
     }
     else
     {
@@ -28,9 +34,9 @@
 
     @if (!string.IsNullOrEmpty(ShowMessage))
     {
-<div class="col-md-12">
-    <p>@ShowMessage</p>
-</div>
+        <div class="col-md-12">
+            <p>@ShowMessage</p>
+        </div>
     }
 
 
@@ -42,6 +48,8 @@
     public byte[] ImageByteString { get; set; }
     [Parameter]
     public EventCallback<byte[]> ImageCallback { get; set; }
+    [Parameter]
+    public string Photo { get; set; }
     public string ShowMessage { get; set; }
 
     private async Task ImageFileSelected()
@@ -60,7 +68,10 @@
     }
     public async Task ConfirmImage()
     {
-        await ImageCallback.InvokeAsync(ImageByteString);
+        if (ImageByteString != null)
+        {
+            await ImageCallback.InvokeAsync(ImageByteString);
+        }
         ShowMessage = "تصویر شما تایید شد";
     }
     public void RemoveImage()

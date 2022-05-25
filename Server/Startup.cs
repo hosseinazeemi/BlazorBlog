@@ -13,6 +13,7 @@ using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace Blazor_10.Server
 {
@@ -29,8 +30,10 @@ namespace Blazor_10.Server
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            //services.AddControllersWithViews();
+            services.AddControllersWithViews().AddJsonOptions(x =>
+              x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
 
-            services.AddControllersWithViews();
             services.AddRazorPages();
             var connection = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<AppDbContext>(option => option.UseSqlServer(connection));
@@ -49,7 +52,7 @@ namespace Blazor_10.Server
                     ClockSkew = TimeSpan.Zero
                 });
 
-
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

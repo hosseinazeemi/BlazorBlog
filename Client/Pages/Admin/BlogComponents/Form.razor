@@ -28,7 +28,14 @@
             <textarea @bind="blog.Description" class="form-control" rows="8" cols="20"></textarea>
         </div>
         <div class="col-12 form-group text-right mb-4">
-            <ImageComponent ImageCallback="@AssignImage" />
+            @if (blog.Photo != null)
+            {
+                <ImageComponent ImageCallback="@AssignImage" Photo="@blog.Photo" />
+            }else
+            {
+                <ImageComponent ImageCallback="@AssignImage" />
+            }
+            
         </div>
         <div class="col-12 form-group text-right">
             <button type="submit" class="mt-2 btn btn-success">ثبت اطلاعات</button>
