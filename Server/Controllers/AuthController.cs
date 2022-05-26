@@ -58,8 +58,9 @@ namespace Blazor_10.Server.Controllers
             var claims = new List<Claim>()
             {
                 new Claim(ClaimTypes.Name , user.Name),
+                new Claim("LastName" , user.LastName),
                 new Claim(ClaimTypes.Email , user.Email),
-                new Claim(ClaimTypes.Sid, user.Id.ToString()),
+                new Claim("UserId", user.Id.ToString()),
                 new Claim(ClaimTypes.Role , user.Role.EnCaption)
             };
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["jwt:key"]));
@@ -74,14 +75,13 @@ namespace Blazor_10.Server.Controllers
                 expires: expiration,
                 signingCredentials: cred
             );
-
-            return new TokenData
+            return await Task.FromResult(new TokenData
             {
                 Token = new JwtSecurityTokenHandler().WriteToken(token),
                 Expiration = expiration,
-                Status = true ,
+                Status = true,
                 Message = "Success"
-            };
+            });
         }
     }
 }

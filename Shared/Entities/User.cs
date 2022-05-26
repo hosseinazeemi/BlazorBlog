@@ -26,6 +26,7 @@ namespace Blazor_10.Shared.Entities
         public long StatusId { get; set; } = 1;
         public virtual Role Role { get; set; }
         public virtual Status Status { get; set; }
-        public virtual ICollection<Blog> Blogs { get; set; }
+        public virtual List<Blog> Blogs { get; set; }
+        public virtual List<Comment> Comments{ get; set; }
     }
 }

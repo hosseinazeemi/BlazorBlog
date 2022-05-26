@@ -58,5 +58,12 @@ namespace Blazor_10.Client.Repositories
 
             return result;
         }
+
+        public async Task<ResponseData<bool>> SendComment(Comment comment)
+        {
+            var result = await _http.PostAsync<Comment, bool>($"{_URL}/sendComment", comment);
+
+            return result;
+        }
     }
 }

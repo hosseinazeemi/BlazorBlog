@@ -11,6 +11,7 @@ namespace Blazor_10.Client.Repositories
     public interface IBlogRepository
     {
         Task<ResponseData<bool>> CreateBlog(Blog blog);
+        Task<ResponseData<bool>> SendComment(Comment comment);
         Task<ResponseData<bool>> DeleteBlog(Blog blog);
         Task<ResponseData<List<Blog>>> GetAllBlogs();
         Task<ResponseData<Blog>> GetBlogById(long Id);

@@ -102,13 +102,14 @@
                                         <img src="assets/imgs/author.png" alt="">
                                     </div>
                                     <div class="desc">
+                                        <h4>@item.Title</h4>
                                         <p class="comment pr-4 text-right">
                                             @item.Description
                                         </p>
                                         <div class="d-flex justify-content-between pr-4">
                                             <div class="d-flex align-items-center">
                                                 <h5>
-                                                    <a href="#">محمد رضایی</a>
+                                                    <a href="#">@item.User.Name @item.User.LastName</a>
                                                 </h5>
                                             </div>
                                         </div>
@@ -121,36 +122,37 @@
                 </div>
             }
             <!--comment form-->
-            <div class="comment-form">
-                <h3 class="mb-30">ارسال نظر</h3>
-                <form class="form-contact comment_form" action="#" id="commentForm">
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="form-group">
-                                <textarea class="form-control w-100" name="comment" id="comment" cols="30" rows="9" placeholder="متن"></textarea>
+            @if (ShowCommentForm)
+            {
+                <div class="comment-form">
+                    <h3 class="mb-30">ارسال نظر</h3>
+                    @if (ResultMessage != null)
+                    {
+                        <p class="text-success text-center">@ResultMessage</p>
+                    }
+
+                    <EditForm class="form-contact comment_form" Model="Comment" OnValidSubmit="SendComment">
+                        <DataAnnotationsValidator />
+                        <ValidationSummary />
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <input class="form-control" @bind-value="Comment.Title" name="title" id="title" type="text" placeholder="عنوان">
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <textarea class="form-control w-100" name="description" id="description" @bind="Comment.Description" cols="30" rows="9" placeholder="متن"></textarea>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <input class="form-control" name="name" id="name" type="text" placeholder="نام شما">
-                            </div>
+                        <div class="form-group">
+                            <button type="submit" class="button button-contactForm">ثبت</button>
                         </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <input class="form-control" name="email" id="email" type="email" placeholder="ایمیل">
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <div class="form-group">
-                                <input class="form-control" name="website" id="website" type="text" placeholder="آدرس وب سایت">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <button type="submit" class="button button-contactForm">ثبت</button>
-                    </div>
-                </form>
-            </div>
+                    </EditForm>
+
+                </div>
+            }
         </div>
     </div>
 </div>
@@ -158,11 +160,44 @@
     [Parameter]
     public long Id { get; set; }
 
+    public Comment Comment { get; set; } = new Comment();
     public BlogDetailDTO blogDetail { get; set; }
+    [CascadingParameter]
+    public Task<AuthenticationState> authState { get; set; }
+    public User CurrentUser { get; set; }
+    public bool ShowCommentForm { get; set; } = false;
+    public string ResultMessage { get; set; }
+    public async Task SendComment()
+    {
+        var result = await blogRepository.SendComment(Comment);
+        var auth = await authState;
+        if (result.Success)
+        {
+            Comment.User = new User
+                {
+                    Id = Convert.ToInt64(auth.User.Claims.Where(p => p.Type == "UserId").Select(p => p.Value).FirstOrDefault()),
+                    Name = auth.User.Claims.Where(p => p.Type == "Name").Select(p => p.Value).FirstOrDefault(),
+                    LastName = auth.User.Claims.Where(p => p.Type == "LastName").Select(p => p.Value).FirstOrDefault()
+                };
+            blogDetail.Blog.Comments.Add(Comment);
+            ResultMessage = "نظر شما با موفقیت ثبت شد";
+        }
+        else
+        {
+            ResultMessage = "در ثبت اطلاعات خطایی رخ داد";
+        }
+    }
     protected override async Task OnInitializedAsync()
     {
         var result = await blogRepository.GetBlogDetail(Id);
+        var auth = await authState;
 
+        Comment.BlogId = Id;
+        if (auth.User != null)
+        {
+            ShowCommentForm = true;
+            Comment.UserId = Convert.ToInt64(auth.User.Claims.Where(p => p.Type == "UserId").Select(p => p.Value).FirstOrDefault());
+        }
         if (result.Success)
         {
             if (result.Response != null)

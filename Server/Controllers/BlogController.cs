@@ -52,7 +52,15 @@ namespace Blazor_10.Server.Controllers
             //}
 
         }
+        [HttpPost("sendComment")]
+        public async Task<bool> SendComment([FromBody] Comment comment)
+        {
+            _appDbContext.Comments.Add(comment);
 
+            await _appDbContext.SaveChangesAsync();
+
+            return await Task.FromResult(true);
+        }
         [HttpGet("blogList")]
         public async Task<List<Blog>> GetBlogs()
         {
@@ -67,7 +75,9 @@ namespace Blazor_10.Server.Controllers
             // -- last blogs
             var result = _appDbContext.Blogs
                 .Where(p => p.Id == Id)
-                .Include(p => p.Comments).FirstOrDefault();
+                .Include(p => p.Comments)
+                .ThenInclude(p => p.User)
+                .FirstOrDefault();
 
             var lastBlogs = _appDbContext.Blogs.OrderByDescending(p => p.Id).Take(5).ToList();
 
