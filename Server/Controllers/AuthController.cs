@@ -37,7 +37,7 @@ namespace Blazor_10.Server.Controllers
         {
             User user = await _db.Users.Include(u => u.Role)
                .FirstOrDefaultAsync(p => p.Email == userData.Email);
-
+            
             if (user != null && _protectPassword.ValidatePassword(userData.Password, user.Password))
             {
                 return await GenerateToken(user);

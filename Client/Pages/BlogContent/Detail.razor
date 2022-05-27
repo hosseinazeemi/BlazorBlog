@@ -10,17 +10,29 @@
                         <a href="/Blog/Detail/@blogDetail.Blog.Id">@blogDetail.Blog.Title</a>
                     </h1>
                     <div class="single-social-share clearfix ">
-                        <div class="entry-meta meta-1 font-small color-grey float-right mt-10">
+                        <div class="entry-meta meta-1 font-large float-right mt-10">
                             <span class="hit-count">
+                                <i class="fa fa-comment-alt"></i>
                                 @if (blogDetail.Blog.Comments != null)
                                 {
-                                    @blogDetail.Blog.Comments.Count
+                                    <span class="pr-1 pl-1">@blogDetail.Blog.Comments.Count</span>
+
+
                                 }
                                 else
                                 {
-                                    <span>0</span>
+                                    <span class="pr-1 pl-1">0</span>
                                 }
-                                <i class="ti-comment mr-5"></i>
+                                <span>نظر</span>
+                            </span>
+                        </div>
+                    </div>
+                     <div class="single-social-share clearfix ">
+                        <div class="entry-meta meta-1 font-large float-right mt-10">
+                            <span class="hit-count">
+                                <i class="fa fa-heart"></i>
+                                @blogDetail.Blog.Like
+                                 <span>پسندیده</span>
                             </span>
                         </div>
                     </div>
@@ -42,14 +54,31 @@
                         </div>
                     </div>
                 </figure>
-
                 <div class="entry-main-content">
-                    <hr class="wp-block-separator is-style-wide">
                     @if (blogDetail.Blog.Description != null)
                     {
                         <p>@blogDetail.Blog.Description</p>
                     }
                 </div>
+                <div class="entry-main-content">
+                    @if (ShowLikeBtn)
+                    {
+                        <button class="btn-like" @onclick="LikeBlog">
+                            <i class="fa fa-heart text-danger"></i>
+                            پسندیدن
+                        </button>
+                    }
+                    else
+                    {
+                        <FormLoading />
+                    }
+
+                </div>
+                @if (LikeMessage != null)
+                {
+                    <p class="text-center">@LikeMessage</p>
+
+                }
             }
 
 
@@ -166,7 +195,24 @@
     public Task<AuthenticationState> authState { get; set; }
     public User CurrentUser { get; set; }
     public bool ShowCommentForm { get; set; } = false;
+    public bool ShowLikeBtn { get; set; } = true;
     public string ResultMessage { get; set; }
+    public string LikeMessage { get; set; }
+    public async Task LikeBlog()
+    {
+        ShowLikeBtn = false;
+        var result = await blogRepository.LikeBlog(Id);
+
+        if (result.Success)
+        {
+            LikeMessage = "انجام شد";
+        }
+        else
+        {
+            LikeMessage = "خطا";
+        }
+        ShowLikeBtn = true;
+    }
     public async Task SendComment()
     {
         var result = await blogRepository.SendComment(Comment);
@@ -187,7 +233,12 @@
             ResultMessage = "در ثبت اطلاعات خطایی رخ داد";
         }
     }
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnParametersSetAsync()
+    {
+        await FetchBlog(Id);
+
+    }
+    public async Task FetchBlog(long Id)
     {
         var result = await blogRepository.GetBlogDetail(Id);
         var auth = await authState;

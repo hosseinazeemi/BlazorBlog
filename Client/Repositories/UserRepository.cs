@@ -1,4 +1,5 @@
 ﻿using Blazor_10.Client.Services;
+using Blazor_10.Shared.DTO;
 using Blazor_10.Shared.Entities;
 using Blazor_10.Shared.Helper;
 using System;
@@ -54,6 +55,13 @@ namespace Blazor_10.Client.Repositories
         public async Task<ResponseData<bool>> DeleteUser(User user)
         {
             var result = await _http.PostAsync<User, bool>($"{_URL}/deleteUser" , user);
+
+            return result;
+        }
+
+        public async Task<ResponseData<bool>> RegisterUser(RegisterDTO user)
+        {
+            var result = await _http.PostAsync<RegisterDTO, bool>($"{_URL}/registerUser", user);
 
             return result;
         }

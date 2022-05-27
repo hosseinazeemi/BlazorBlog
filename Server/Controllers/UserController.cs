@@ -1,4 +1,5 @@
 ﻿using Blazor_10.Server.Context;
+using Blazor_10.Shared.DTO;
 using Blazor_10.Shared.Entities;
 using Blazor_10.Shared.Helper;
 using Microsoft.AspNetCore.Mvc;
@@ -42,7 +43,31 @@ namespace Blazor_10.Server.Controllers
             {
                 user.Password = _protect.HashPassword(user.Password);
             }
+
             _appDbContext.Users.Add(user);
+
+            await _appDbContext.SaveChangesAsync();
+
+            return true;
+        }
+        [HttpPost("registerUser")]
+        public async Task<bool> RegisterUser([FromBody] RegisterDTO user)
+        {
+            var role = _appDbContext.Roles.FirstOrDefault(p => p.EnCaption == "user");
+            User newUser = new User
+            {
+                Name = user.Name , 
+                LastName = user.LastName , 
+                Email = user.Email , 
+                RoleId = 1
+                
+            };
+            if (!string.IsNullOrEmpty(user.Password))
+            {
+                newUser.Password = _protect.HashPassword(user.Password);
+            }
+
+            _appDbContext.Users.Add(newUser);
 
             await _appDbContext.SaveChangesAsync();
 

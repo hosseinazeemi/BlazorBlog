@@ -1,5 +1,7 @@
-﻿@page "/Register" 
-
+﻿@page "/Register"
+@inject IUserRepository userRepository
+@inject NavigationManager nav
+@inject JWTService jwt
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-xl-6 col-md-10">
@@ -8,20 +10,43 @@
                     <div class="heading_s1">
                         <h3 class="mb-30 text-center">ثبت نام</h3>
                     </div>
-                    <form method="post">
+                    <EditForm Model="User" OnValidSubmit="RegisterUser">
+                        <DataAnnotationsValidator />
+                        <ValidationSummary />
+                        @if (RegisterMessage != null)
+                        {
+                            <p class="text-center">@RegisterMessage</p>
+
+                        }
                         <div class="form-group">
-                            <input type="text" required="" class="form-control" name="email" placeholder="ایمیل">
+                            <input type="text" required="" @bind-value="User.Name" class="form-control" name="name" placeholder="نام">
                         </div>
                         <div class="form-group">
-                            <input class="form-control" required="" type="password" name="password" placeholder="کلمه عبور">
+                            <input type="text" required="" @bind-value="User.LastName" class="form-control" name="lastName" placeholder="نام خانوادگی">
                         </div>
                         <div class="form-group">
-                            <input class="form-control" required="" type="password" name="password" placeholder="تکرار کلمه عبور">
+                            <input type="text" required="" @bind-value="User.Email" class="form-control" name="email" placeholder="ایمیل">
                         </div>
                         <div class="form-group">
-                            <button type="submit" class="btn btn-fill-out btn-block" name="login">ثبت نام</button>
+                            <input class="form-control" @bind-value="User.Password" required="" type="password" name="password" placeholder="کلمه عبور">
                         </div>
-                    </form>
+                        <div class="form-group">
+                            <input class="form-control" @bind-value="User.ConfirmPassword" required="" type="password" name="confirmPassword" placeholder="تکرار کلمه عبور">
+                        </div>
+
+                        @if (ShowRegisterButton)
+                        {
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-fill-out btn-block" name="login">ثبت نام</button>
+                            </div>
+                        }
+                        else
+                        {
+                            <FormLoading />
+                        }
+
+                    </EditForm>
+
                     <div class="text-muted text-center">قبلا ثبت نام کرده اید ؟ <NavLink href="/login">ورود به حساب</NavLink></div>
                 </div>
             </div>
@@ -29,5 +54,22 @@
     </div>
 </div>
 @code {
+    public RegisterDTO User { get; set; } = new RegisterDTO();
+    public bool ShowRegisterButton { get; set; } = true;
+    public string RegisterMessage { get; set; }
+    public async Task RegisterUser()
+    {
+        ShowRegisterButton = false;
+        var result = await userRepository.RegisterUser(User);
 
+        if (result.Success)
+        {
+            await jwt.Logout();
+            nav.NavigateTo("/Login");
+        }
+        else
+        {
+            RegisterMessage = "در ثبت نام شما خطایی رخ داد";
+        }
+    }
 }

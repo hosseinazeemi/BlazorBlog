@@ -65,5 +65,12 @@ namespace Blazor_10.Client.Repositories
 
             return result;
         }
+
+        public async Task<ResponseData<bool>> LikeBlog(long Id)
+        {
+            var result = await _http.PostAsync<long, bool>($"{_URL}/likeBlog", Id);
+
+            return result;
+        }
     }
 }

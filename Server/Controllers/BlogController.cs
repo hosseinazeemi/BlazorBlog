@@ -89,6 +89,21 @@ namespace Blazor_10.Server.Controllers
 
             return await Task.FromResult(blogDetail);
         }
+
+        [HttpPost("likeBlog")]
+        public async Task<bool> LikeBlog([FromBody] long Id)
+        {
+            var result = _appDbContext.Blogs.Where(p => p.Id == Id).FirstOrDefault();
+
+            result.Like += 1;
+
+            _appDbContext.Update(result);
+
+            await _appDbContext.SaveChangesAsync();
+
+            return await Task.FromResult(true);
+        }
+
         [HttpPost("getBlogById")]
         public async Task<Blog> GetBlogById([FromBody] long Id)
         {

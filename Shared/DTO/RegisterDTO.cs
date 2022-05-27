@@ -5,11 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Blazor_10.Shared.Entities
+namespace Blazor_10.Shared.DTO
 {
-    public class User
+    public class RegisterDTO
     {
-        public long Id { get; set; }
         [Required(ErrorMessage = "وارد کردن نام الزامی است")]
         public string Name { get; set; }
         [Required(ErrorMessage = "وارد کردن نام خانوادگی الزامی است")]
@@ -23,13 +22,6 @@ namespace Blazor_10.Shared.Entities
         public string Password { get; set; }
         [Required(ErrorMessage = "تایید کلمه عبور الزامی است")]
         [Compare("Password")]
-        public string Job { get; set; } = null;
-        public string Bio { get; set; } = null;
-        public long RoleId { get; set; }
-        public long StatusId { get; set; } = 1;
-        public virtual Role Role { get; set; }
-        public virtual Status Status { get; set; }
-        public virtual List<Blog> Blogs { get; set; }
-        public virtual List<Comment> Comments{ get; set; }
+        public string ConfirmPassword { get; set; }
     }
 }
