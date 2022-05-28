@@ -14,6 +14,7 @@ namespace Blazor_10.Client.Repositories
         Task<ResponseData<bool>> SendComment(Comment comment);
         Task<ResponseData<bool>> DeleteBlog(Blog blog);
         Task<ResponseData<List<Blog>>> GetAllBlogs();
+        Task<ResponseData<List<Blog>>> GetBlogsWithUserId(long UserId);
         Task<ResponseData<Blog>> GetBlogById(long Id);
         Task<ResponseData<bool>> LikeBlog(long Id);
         Task<ResponseData<BlogDetailDTO>> GetBlogDetail(long Id);

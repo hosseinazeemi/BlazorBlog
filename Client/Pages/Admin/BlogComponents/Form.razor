@@ -12,11 +12,13 @@
 
                     @foreach (Category item in categories)
                     {
-                        <option value="@item.Id">@item.Name</option>                    } 
+                        <option value="@item.Id">@item.Name</option>
+                    }
                 }
                 else
                 {
-<option value="0">هیچ دسته بندی یافت نشد</option>                }
+                    <option value="0">هیچ دسته بندی یافت نشد</option>
+                }
             </select>
         </div>
         <div class="col-12 form-group text-right mb-4">
@@ -31,14 +33,23 @@
             @if (blog.Photo != null)
             {
                 <ImageComponent ImageCallback="@AssignImage" Photo="@blog.Photo" />
-            }else
+            }
+            else
             {
                 <ImageComponent ImageCallback="@AssignImage" />
             }
-            
+
         </div>
-        <div class="col-12 form-group text-right">
-            <button type="submit" class="mt-2 btn btn-success">ثبت اطلاعات</button>
-        </div>
+        @if (ShowLoading)
+        {
+            <FormLoading />
+        }
+        else
+        {
+            <div class="col-12 form-group text-right">
+                <button type="submit" class="mt-2 btn btn-success">ثبت اطلاعات</button>
+            </div>
+        }
+
     </div>
 </EditForm>

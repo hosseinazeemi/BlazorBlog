@@ -1,8 +1,36 @@
 ﻿@layout AdminLayout
 @page "/admin"
-@attribute [Authorize(Roles = "admin")]
+@attribute [Authorize(Roles = "user, admin")]  
+@inject AuthenticationStateProvider authStateProvider
+@using System.Security.Claims
 
-<h3>Dashboard</h3>
+@if (authState != null && authState.User.Identity.IsAuthenticated)
+{
+    <h2>خوش آمدید</h2>
+    @if (claims != null)
+    {
+        @foreach (var item in claims)
+        {
+            <h2>@item.Type &nbsp; @item.Value </h2>
+        }
+    }else
+    {
+        <FormLoading />
+    }
+
+}
+else
+{
+    <a href="/Login" class="font-large">ابتدا در سیستم لاگین کنید</a>
+}
 
 @code {
+    public AuthenticationState authState { get; set; }
+    List<Claim> claims { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        await Task.Delay(1000);
+        authState = await authStateProvider.GetAuthenticationStateAsync();
+        claims = authState.User.Claims.ToList();
+    }
 }

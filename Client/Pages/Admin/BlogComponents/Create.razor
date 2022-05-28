@@ -8,6 +8,7 @@
     <h3 class="text-right">ثبت مقاله</h3>
     @if (ShowMessage)
     {
-<p class="alert alert-info text-center font-weight-bold">@Message</p>}
-    <Form blog="blog" SubmitCallback="CreateBlog" />
+        <p class="alert alert-info text-center font-weight-bold">@Message</p>
+    }
+    <Form blog="blog" SubmitCallback="CreateBlog" @ref="form" />
 </div>

@@ -6,20 +6,30 @@
 </div>
 
 <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+
+
     <ul class="nav flex-column">
         <li class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+            <NavLink class="nav-link" href="/" Match="NavLinkMatch.All">
+                <span class="oi oi-home" aria-hidden="true"></span>
+                نمایش سایت
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="/admin" Match="NavLinkMatch.All">
                 <span class="oi oi-home" aria-hidden="true"></span>
                 داشبورد
             </NavLink>
         </li>
-        <li class="nav-item px-3">
+        <AuthorizeView Roles="admin">
+            <Authorized>
+                <li class="nav-item px-3">
             <NavLink class="nav-link" href="admin/users/create">
                 <span class="oi oi-plus" aria-hidden="true"></span>
                 ثبت کاربر جدید
             </NavLink>
         </li>
-        <li class="nav-item px-3">
+         <li class="nav-item px-3">
             <NavLink class="nav-link" href="admin/users/list">
                 <span class="oi oi-list-rich" aria-hidden="true"></span>
                 لیست کاربران
@@ -31,15 +41,17 @@
                 ثبت دسته بندی
             </NavLink>
         </li>
-        <li class="nav-item px-3">
+         <li class="nav-item px-3">
             <NavLink class="nav-link" href="admin/categories/list">
                 <span class="oi oi-list-rich" aria-hidden="true"></span>
                 لیست دسته بندی
             </NavLink>
         </li>
+            </Authorized>
+        </AuthorizeView>
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="admin/blogs/create">
-                <span class="oi oi-list-rich" aria-hidden="true"></span>
+                <span class="oi oi-plus" aria-hidden="true"></span>
                 ثبت مقاله
             </NavLink>
         </li>
@@ -49,6 +61,7 @@
                 لیست مقاله ها
             </NavLink>
         </li>
+       
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="admin/comments">
                 <span class="oi oi-list-rich" aria-hidden="true"></span>

@@ -62,8 +62,17 @@
     protected override void OnInitialized()
     {
         User = new UserData();
-    }
 
+    }
+    protected override async Task OnParametersSetAsync()
+    {
+        var authState = await authenticaionState;
+
+        if (authState.User.Identity.IsAuthenticated)
+        {
+            navigationManager.NavigateTo("/");
+        }
+    }
     private async Task LoginUser()
     {
         tokenService.Dispose();

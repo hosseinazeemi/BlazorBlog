@@ -12,14 +12,15 @@ namespace Blazor_10.Client.Pages.Admin.BlogComponents
         public Blog blog { get; set; } = new Blog();
         public string Message = null;
         public bool ShowMessage = false;
-
+        Form form { get; set; }
         private async Task CreateBlog()
         {
+            form.ShowLoading = true;
             string UserId = null;
             var auth = await authState.GetAuthenticationStateAsync();
             if (auth.User.Identity.IsAuthenticated)
             {
-                UserId = auth.User.Claims.Where(p => p.Type == ClaimTypes.Sid).Select(p => p.Value).FirstOrDefault();
+                UserId = auth.User.Claims.Where(p => p.Type == "UserId").Select(p => p.Value).FirstOrDefault();
             }
             if (!string.IsNullOrEmpty(UserId))
             {
@@ -45,7 +46,7 @@ namespace Blazor_10.Client.Pages.Admin.BlogComponents
             {
                 Console.WriteLine("You are not logedin");
             }
-            
+            form.ShowLoading = false;
         }
     }
 }

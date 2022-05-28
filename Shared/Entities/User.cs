@@ -21,8 +21,6 @@ namespace Blazor_10.Shared.Entities
         [DataType(DataType.Password, ErrorMessage = "کلمه عبور را بدرستی وارد کنید")]
         [Required(ErrorMessage = "وارد کردن کلمه عبور الزامی است")]
         public string Password { get; set; }
-        [Required(ErrorMessage = "تایید کلمه عبور الزامی است")]
-        [Compare("Password")]
         public string Job { get; set; } = null;
         public string Bio { get; set; } = null;
         public long RoleId { get; set; }

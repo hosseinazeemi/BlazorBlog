@@ -59,7 +59,7 @@ namespace Blazor_10.Server.Controllers
                 Name = user.Name , 
                 LastName = user.LastName , 
                 Email = user.Email , 
-                RoleId = 1
+                RoleId = role.Id
                 
             };
             if (!string.IsNullOrEmpty(user.Password))

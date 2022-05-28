@@ -141,3 +141,11 @@ a, p, li, ul, h1, h2, h3, h4, h5, h6, pre, strong {
 .hit-count {
     color: #0e6c0a;
 }
+.main-wrap {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+.main-wrap main {
+    flex-grow:1;
+}

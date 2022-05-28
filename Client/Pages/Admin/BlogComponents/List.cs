@@ -1,4 +1,7 @@
 ﻿using Blazor_10.Shared.Entities;
+using Blazor_10.Shared.Helper;
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,18 +12,29 @@ namespace Blazor_10.Client.Pages.Admin.BlogComponents
     public partial class List
     {
         public List<Blog> Blogs;
+        public ResponseData<List<Blog>> Response;
         public string Message = null;
         public bool ShowMessage = false;
+        [Parameter]
+        public long Id { get; set; } = 0;
+
         protected async override Task OnInitializedAsync()
         {
-            var result = await blogRepository.GetAllBlogs();
-            ShowMessage = true;
-            if (result.Success)
+            if (Id > 0)
             {
-                Message = $"تعداد رکورد های دریافتی برابر با {result.Response.Count}";
-                if (result.Response != null && result.Response.Count > 0)
+                Response = await blogRepository.GetBlogsWithUserId(Id);
+            }
+            else
+            {
+                Response = await blogRepository.GetAllBlogs();
+            }
+            ShowMessage = true;
+            if (Response.Success)
+            {
+                Message = $"تعداد رکورد های دریافتی برابر با {Response.Response.Count}";
+                if (Response.Response != null && Response.Response.Count > 0)
                 {
-                    Blogs = result.Response;
+                    Blogs = Response.Response;
                 }
                 else
                 {

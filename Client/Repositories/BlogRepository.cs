@@ -31,6 +31,12 @@ namespace Blazor_10.Client.Repositories
 
             return result;
         }
+        public async Task<ResponseData<List<Blog>>> GetBlogsWithUserId(long UserId)
+        {
+            var result = await _http.PostAsync<long, List<Blog>>($"{_URL}/userBlogList", UserId);
+
+            return result;
+        }
         public async Task<ResponseData<Blog>> GetBlogById(long Id)
         {
             var result = await _http.PostAsync<long, Blog>($"{_URL}/getBlogById", Id);

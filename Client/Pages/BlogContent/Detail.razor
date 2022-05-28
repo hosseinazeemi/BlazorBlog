@@ -1,5 +1,6 @@
 ﻿@page "/blog/detail/{Id:long}"
 @inject IBlogRepository blogRepository
+@inject AuthenticationStateProvider authStateProvider
 <div class="container">
     <div class="row text-center">
         <div class="col-lg-10 col-md-12 col-sm-12 m-auto" dir="rtl">
@@ -27,12 +28,12 @@
                             </span>
                         </div>
                     </div>
-                     <div class="single-social-share clearfix ">
+                    <div class="single-social-share clearfix ">
                         <div class="entry-meta meta-1 font-large float-right mt-10">
                             <span class="hit-count">
                                 <i class="fa fa-heart"></i>
                                 @blogDetail.Blog.Like
-                                 <span>پسندیده</span>
+                                <span>پسندیده</span>
                             </span>
                         </div>
                     </div>
@@ -151,37 +152,43 @@
                 </div>
             }
             <!--comment form-->
-            @if (ShowCommentForm)
-            {
-                <div class="comment-form">
-                    <h3 class="mb-30">ارسال نظر</h3>
-                    @if (ResultMessage != null)
-                    {
-                        <p class="text-success text-center">@ResultMessage</p>
-                    }
+            <AuthorizeView>
+                <Authorized Context="authorizeContext">
+                   <div>
+                        <div class="comment-form">
+                        <h3 class="mb-30">ارسال نظر</h3>
+                        @if (ResultMessage != null)
+                        {
+                            <p class="text-success text-center">@ResultMessage</p>
+                        }
 
-                    <EditForm class="form-contact comment_form" Model="Comment" OnValidSubmit="SendComment">
-                        <DataAnnotationsValidator />
-                        <ValidationSummary />
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <input class="form-control" @bind-value="Comment.Title" name="title" id="title" type="text" placeholder="عنوان">
+                        <EditForm class="form-contact comment_form" Model="Comment" OnValidSubmit="SendComment">
+                            <DataAnnotationsValidator />
+                            <ValidationSummary />
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <input class="form-control" @bind-value="Comment.Title" name="title" id="title" type="text" placeholder="عنوان">
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <textarea class="form-control w-100" name="description" id="description" @bind="Comment.Description" cols="30" rows="9" placeholder="متن"></textarea>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-12">
-                                <div class="form-group">
-                                    <textarea class="form-control w-100" name="description" id="description" @bind="Comment.Description" cols="30" rows="9" placeholder="متن"></textarea>
-                                </div>
+                            <div class="form-group">
+                                <button type="submit" class="button button-contactForm">ثبت</button>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <button type="submit" class="button button-contactForm">ثبت</button>
-                        </div>
-                    </EditForm>
+                        </EditForm>
 
-                </div>
-            }
+                    </div>
+                   </div>
+                </Authorized>
+                <NotAuthorized>
+                    <a href="/Login">ورود به سیستم</a>
+                </NotAuthorized>
+            </AuthorizeView>
         </div>
     </div>
 </div>
@@ -194,7 +201,6 @@
     [CascadingParameter]
     public Task<AuthenticationState> authState { get; set; }
     public User CurrentUser { get; set; }
-    public bool ShowCommentForm { get; set; } = false;
     public bool ShowLikeBtn { get; set; } = true;
     public string ResultMessage { get; set; }
     public string LikeMessage { get; set; }
@@ -244,9 +250,8 @@
         var auth = await authState;
 
         Comment.BlogId = Id;
-        if (auth.User != null)
+        if (auth.User.Identity.IsAuthenticated)
         {
-            ShowCommentForm = true;
             Comment.UserId = Convert.ToInt64(auth.User.Claims.Where(p => p.Type == "UserId").Select(p => p.Value).FirstOrDefault());
         }
         if (result.Success)

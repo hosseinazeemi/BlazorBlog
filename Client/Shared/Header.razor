@@ -1,5 +1,6 @@
 ﻿@inject IUserAuthService userService
 @inject NavigationManager navigationManager
+@inject AuthenticationStateProvider authStateProvider
 <header class="main-header header-style-1 mb-40">
     <div class="top-bar pt-10 pb-10 background-white d-none d-md-block">
         <div class="container">
@@ -21,9 +22,12 @@
                             <span>حساب کاربری</span>
                         </a>
                         <div id="userMenuDropdow" class="dropdown-menu dropdown-menu-right text-right shadow" aria-labelledby="userMenu">
-                            <a class="dropdown-item" href="#">ویرایش اطلاعات</a>
-                            <a class="dropdown-item" href="#">ثبت مقاله جدید</a>
-                            <a class="dropdown-item" href="#">لیست مقاله های من</a>
+                            <a class="dropdown-item" href="/admin">پروفایل</a>
+                            <a class="dropdown-item" href="/admin/blogs/create">ثبت مقاله جدید</a>
+                            @if (auth != null && auth.User != null && auth.User.Identity.IsAuthenticated)
+                            {
+                                <a class="dropdown-item" href="/admin/blogs/list/@auth.User.Claims.Where(p => p.Type == "UserId").Select(p => p.Value).FirstOrDefault()">لیست مقاله های من</a>
+                            }
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" @onclick="Logout">
                                 خروج
@@ -63,14 +67,22 @@
                                 </li>
 
 
-                                <li>
-                                    <a href="/Register" class="font-weight-bold">ثبت نام</a>
-                                </li>
-                                <li>
-                                    <a href="/Login" class="font-weight-bold">ورود</a>
+                                <AuthorizeView>
+                                    <Authorized>
+                                        <li>
+                                            <a @onclick="Logout" class="font-weight-bold">خروج</a>
+                                        </li>
+                                    </Authorized>
+                                    <NotAuthorized>
+                                        <li>
+                                            <a href="/Register" class="font-weight-bold">ثبت نام</a>
+                                        </li>
+                                        <li>
+                                            <a href="/Login" class="font-weight-bold">ورود</a>
 
-                                </li>
-
+                                        </li>
+                                    </NotAuthorized>
+                                </AuthorizeView>
                             </ul>
                         </nav>
                     </div>
@@ -80,6 +92,12 @@
     </div>
 </header>
 @code {
+    AuthenticationState auth { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        auth = await authStateProvider.GetAuthenticationStateAsync();
+
+    }
     [Parameter]
     public List<MenuDTO> menuList { get; set; }
     private async Task Logout()

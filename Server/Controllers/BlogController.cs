@@ -68,6 +68,13 @@ namespace Blazor_10.Server.Controllers
 
             return await Task.FromResult(blogs);
         }
+        [HttpPost("userBlogList")]
+        public async Task<List<Blog>> UserBlogList([FromBody] long UserId)
+        {
+            var blogs = _appDbContext.Blogs.Where(p => p.UserId == UserId).OrderByDescending(p => p.Id).ToList();
+
+            return await Task.FromResult(blogs);
+        }
         [HttpPost("getBlogDetail")]
         public async Task<BlogDetailDTO> GetBlogDetail([FromBody] long Id)
         {

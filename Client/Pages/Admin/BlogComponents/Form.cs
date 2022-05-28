@@ -17,6 +17,7 @@ namespace Blazor_10.Client.Pages.Admin.BlogComponents
         [Inject]
         public ICategoryRepository categoryRepository { get; set; }
         public List<Category> categories { get; set; }
+        public bool ShowLoading { get; set; } = false;
         protected async override Task OnInitializedAsync()
         {
             var response = await categoryRepository.GetAllCategories();

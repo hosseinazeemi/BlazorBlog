@@ -2,35 +2,47 @@
 @using Microsoft.AspNetCore.Components.WebAssembly.Services
 @using System.Reflection
 
+
 <Router AppAssembly="@typeof(Program).Assembly" OnNavigateAsync="OnNavigateAsync"
         AdditionalAssemblies="lazyLoadedAssemblies">
+
     <Found Context="routeData">
         <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
             <Authorizing>
-                <text>Custom authorizing...</text>
+                <div class="authorize-holder">
+                    <p class="text-danger text-center font-large">در حال اعتبار سنجی</p>
+                </div>
             </Authorizing>
             <NotAuthorized>
-                <text>دسترسی شما در این صفحه محدود است</text>
+                <div class="authorize-holder">
+                    <p class="text-danger text-center font-large">شما به این صفحه دسترسی ندارید</p>
+                </div>
             </NotAuthorized>
         </AuthorizeRouteView>
     </Found>
     <NotFound>
         <CascadingAuthenticationState>
             <LayoutView Layout="@typeof(MainLayout)">
-            <p>پیدا نشد</p>
+                <div class="authorize-holder">
+                    <p class="text-danger text-center font-large">صفحه مورد نظر یافت نشد</p>
+                    <a href="/" class="text-center text-primary font-medium">برگشت به سایت</a>
+                </div>
             </LayoutView>
         </CascadingAuthenticationState>
+
     </NotFound>
 </Router>
 
+
+
 @code { private List<Assembly> lazyLoadedAssemblies = new List<Assembly>();
 
-            private async Task OnNavigateAsync(NavigationContext args)
-            {
-                if (args.Path.EndsWith("counter"))
-                {
-                    var assemblies = await lazyLoader.LoadAssembliesAsync(
-                        new List<string> { "MathNet.Numerics.dll" });
-                    lazyLoadedAssemblies.AddRange(assemblies);
-                }
-            } }
+    private async Task OnNavigateAsync(NavigationContext args)
+    {
+        if (args.Path.EndsWith("counter"))
+        {
+            var assemblies = await lazyLoader.LoadAssembliesAsync(
+                new List<string> { "MathNet.Numerics.dll" });
+            lazyLoadedAssemblies.AddRange(assemblies);
+        }
+    } }
